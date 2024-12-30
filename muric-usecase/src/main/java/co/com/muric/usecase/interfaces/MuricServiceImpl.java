@@ -1,7 +1,7 @@
 package co.com.muric.usecase.interfaces;
 
 import co.com.muric.entities.dto.MuricResponseDTO;
-import co.com.muric.infrastructure.api.interfaces.IMuricAPI;
+import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.implement.IMuricService;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +15,7 @@ public class MuricServiceImpl implements IMuricService {
     private static final Logger logger = LogManager.getLogger(MuricServiceImpl.class);
 
     private IMuricRepository muricRepository;
-    private IMuricAPI muricAPI;
+    private ISuperintendenciaAPI superintendenciaAPI;
 
     @Override
     public MuricResponseDTO generateAvro(String source) {
@@ -35,6 +35,11 @@ public class MuricServiceImpl implements IMuricService {
 
     private MuricResponseDTO generateAvroFromDataBase() {
         muricRepository.findData();
+        return MuricResponseDTO.builder().build();
+    }
+
+    private MuricResponseDTO sendAvro(){
+        superintendenciaAPI.sendAvro();
         return MuricResponseDTO.builder().build();
     }
 }
