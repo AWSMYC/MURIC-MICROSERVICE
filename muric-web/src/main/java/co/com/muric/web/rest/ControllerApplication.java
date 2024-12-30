@@ -11,7 +11,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping(value = "/muric", produces = APPLICATION_JSON_VALUE)
 @AllArgsConstructor
-public class MuricRest {
+public class ControllerApplication {
 
     @GetMapping(value = "/health-check", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getHealth() {

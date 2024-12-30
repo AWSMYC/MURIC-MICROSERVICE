@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableCaching
 @SpringBootApplication
 @ComponentScan("co.com.muric")
-public class MuricWebApplication {
+public class WebApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(MuricWebApplication.class, args);
+		SpringApplication.run(WebApplication.class, args);
 	}
 }
