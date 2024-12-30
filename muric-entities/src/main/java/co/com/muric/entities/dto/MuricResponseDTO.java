@@ -9,5 +9,5 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class SuperFinancieraResponseDTO {
+public class MuricResponseDTO {
 }

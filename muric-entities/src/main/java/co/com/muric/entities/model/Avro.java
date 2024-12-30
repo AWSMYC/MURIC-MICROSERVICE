@@ -11,8 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ENTITY_ATTRIBUTE")
-public class EntityAttribute {
+@Table(name = "AVRO")
+public class Avro {
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
