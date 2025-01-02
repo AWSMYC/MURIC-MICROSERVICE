@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ENTIDAD")
+@Table(name = "entidad")
 @EntityListeners(AuditingEntityListener.class)
 public class Entidad {
     @Id
@@ -27,14 +27,14 @@ public class Entidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "TIPO_ENTIDAD")
+    @Column(name = "tipo_entidad")
     @NotNull(message = "El tipo de entidad no puede ser nulo")
     @Min(value = 1, message = "El tipo de entidad debe ser al menos 1")
     @Max(value = 100, message = "El tipo de entidad no puede exceder 100")
     @Size(max = 200)
     private Integer tipoEntidad;
 
-    @Column(name = "CODIGO_ENTIDAD")
+    @Column(name = "codigo_entidad")
     @NotNull(message = "El codigo de entidad no puede ser nulo")
     @Min(value = 1, message = "El codigo de entidad debe ser al menos 1")
     @Max(value = 100, message = "El codigo de entidad no puede exceder 100")
@@ -42,34 +42,34 @@ public class Entidad {
     private String codigoEntidad;
 
     @Size(min = 1, max = 200)
-    @Column(name = "NOMBRE_ENTIDAD", length = 200)
+    @Column(name = "nombre_entidad", length = 200)
     private String nombreEntidad;
 
-    @Column(name = "TIPO_REPORTE")
+    @Column(name = "tipo_reporte")
     @NotNull(message = "El tipo de reporte no puede ser nulo")
     @Min(value = 1, message = "El tipo de reporte debe ser al menos 1")
     @Max(value = 100, message = "El tipo de reporte no puede exceder 100")
     @Size(max = 200)
     private Integer tipoReporte;
 
-    @Column(name = "FECHA_CORTE")
+    @Column(name = "fecha_corte")
     @CreatedDate
     private LocalDateTime fechaCorte;
 
-    @Column(name = "FECHA_GENERACION")
+    @Column(name = "fecha_generacion")
     @CreatedDate
     private LocalDateTime fechaGeneracion;
 
     @Size(min = 1, max = 500)
-    @Column(name = "COMENTARIOS",  length = 500)
+    @Column(name = "comentarios",  length = 500)
     private String comentarios;
 
     @Size(min = 1, max = 200)
-    @Column(name = "FIRMA",  length = 200)
+    @Column(name = "firma",  length = 200)
     private String firma;
 
     @Size(max = 200)
-    @Column(name = "PALABRA_CLAVE", length = 200)
+    @Column(name = "palabra_clave", length = 200)
     private String palabraClave;
 
     @OneToMany(mappedBy = "entidad", cascade = CascadeType.ALL, orphanRemoval = true)
