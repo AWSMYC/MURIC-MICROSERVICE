@@ -3,12 +3,15 @@ package co.com.muric.entities.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,41 +27,49 @@ public class Entidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "TIPO_ENTIDAD", nullable = false)
+    @NotNull(message = "El tipo de entidad no puede ser nulo")
+    @Min(value = 1, message = "El tipo de entidad debe ser al menos 1")
+    @Max(value = 100, message = "El tipo de entidad no puede exceder 100")
     @Size(max = 200)
-    @Column(name = "TIPO_ENTIDAD", length = 200)
-    private String tipoEntidad;
+    private Integer tipoEntidad;
 
+    @Column(name = "CODIGO_ENTIDAD", nullable = false)
+    @NotNull(message = "El codigo de entidad no puede ser nulo")
+    @Min(value = 1, message = "El codigo de entidad debe ser al menos 1")
+    @Max(value = 100, message = "El codigo de entidad no puede exceder 100")
     @Size(max = 200)
-    @Column(name = "CODIGO_ENTIDAD", length = 200)
     private String codigoEntidad;
 
-    @Size(max = 200)
-    @Column(name = "NOMBRE_ENTIDAD", length = 200)
+    @Size(min = 1, max = 200)
+    @Column(name = "NOMBRE_ENTIDAD", nullable = false, length = 200)
     private String nombreEntidad;
 
+    @Column(name = "TIPO_REPORTE", nullable = false)
+    @NotNull(message = "El tipo de reporte no puede ser nulo")
+    @Min(value = 1, message = "El tipo de reporte debe ser al menos 1")
+    @Max(value = 100, message = "El tipo de reporte no puede exceder 100")
     @Size(max = 200)
-    @Column(name = "TIPO_REPORTE", length = 200)
-    private String tipoReporte;
+    @Size(max = 200)
+    private Integer tipoReporte;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "FECHA_CORTE")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date fechaCorte;
+    @Column(name = "FECHA_CORTE", nullable = false)
+    @CreatedDate
+    private LocalDateTime fechaCorte;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "FECHA_GENERACION")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private String fechaGeneracion;
+    @Column(name = "FECHA_GENERACION", nullable = false)
+    @CreatedDate
+    private LocalDateTime fechaGeneracion;
 
-    @Size(max = 500)
-    @Column(name = "COMENTARIOS", length = 500)
+    @Size(min = 1, max = 500)
+    @Column(name = "COMENTARIOS", nullable = false,  length = 500)
     private String comentarios;
 
-    @Size(max = 200)
-    @Column(name = "FIRMA", length = 200)
+    @Size(min = 1, max = 200)
+    @Column(name = "FIRMA", nullable = false,  length = 200)
     private String firma;
 
     @Size(max = 200)
-    @Column(name = "PALABRA_CLAVE", length = 200)
+    @Column(name = "PALABRA_CLAVE", nullable = false, length = 200)
     private String palabraClave;
 }
