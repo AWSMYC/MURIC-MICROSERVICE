@@ -1,14 +1,13 @@
 package co.com.muric.entities.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,65 +23,64 @@ public class InsumosCredito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "IDENTIFICACION_CREDITO_ENTIDAD")
+    @NotNull(message = "El codigo de entidad no puede ser nulo")
+    @Min(value = 1, message = "El codigo de entidad debe ser al menos 1")
+    @Max(value = 100, message = "El codigo de entidad no puede exceder 100")
     @Size(max = 200)
-    @Column(name = "IDENTIFICACION_CREDITO_ENTIDAD", length = 200)
     private String identificacionCreditoEntidad;
 
-    @Size(max = 200)
-    @Column(name = "TIPO_IDENTIFICACION", length = 200)
-    private String tipoIdentificacion;
+    @Column(name = "TIPO_IDENTIFICACION")
+    private MuricEnums tipoIdentificacion;
 
     @Size(max = 200)
     @Column(name = "NUMERO_INDENTIFICACION", length = 200)
     private String numeroIdentificacion;
 
-    @Size(max = 200)
-    @Column(name = "MODALIDAD", length = 200)
-    private String modalidad;
+    @Column(name = "MODALIDAD")
+    private MuricEnums modalidad;
 
-    @Size(max = 200)
-    @Column(name = "CODIGO_PRODUCTO", length = 200)
-    private String codigoProducto;
+    @Column(name = "CODIGO_PRODUCTO")
+    private MuricEnums codigoProducto;
 
-    @Size(max = 200)
-    @Column(name = "CALIDAD_DEUDOR", length = 200)
-    private String calidadDeudor;
+    @Column(name = "CALIDAD_DEUDOR")
+    private MuricEnums calidadDeudor;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "FECHA_DESEMBOLSO")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date fechaDesembolso;
+    @CreatedDate
+    private LocalDateTime fechaDesembolso;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "FECHA_VENCIMIENTO")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date fechaVencimiento;
+    @CreatedDate
+    private LocalDateTime fechaVencimiento;
 
-    @Column(name = "VALOR_DESEMBOLSADO", nullable = false, precision = 10, scale = 2)
+    @Column(name = "VALOR_DESEMBOLSADO", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double valorDesembolsado;
 
-    @Size(max = 200)
-    @Column(name = "FRECUENCIA_PAGO_CAPITAL", length = 200)
-    private String frecuenciaPagoCapital;
+    @Column(name = "FRECUENCIA_PAGO_CAPITAL")
+    private MuricEnums frecuenciaPagoCapital;
 
-    @Size(max = 200)
     @Column(name = "FRECUENCIA_PAGO_INTERESES", length = 200)
-    private String frecuenciaPagoIntereses;
+    private MuricEnums frecuenciaPagoIntereses;
 
-    @Size(max = 200)
-    @Column(name = "TIPO_TASA", length = 200)
-    private String tipoTasa;
+    @Column(name = "TIPO_TASA")
+    private MuricEnums tipoTasa;
 
     @Size(max = 200)
     @Column(name = "TIPO_GARANTIA", length = 200)
-    private String tipoGarantia;
+    private MuricEnums tipoGarantia;
 
     @Size(max = 200)
     @Column(name = "MONEDA", length = 200)
-    private String moneda;
+    private MuricEnums moneda;
 
     @Size(max = 200)
     @Column(name = "ESTADO_REGISTRO", length = 200)
-    private String estadoRegistro;
+    private MuricEnums estadoRegistro;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movimientos_cartera_id")
+    private MovimientosCartera movimientosCartera;
+
 }

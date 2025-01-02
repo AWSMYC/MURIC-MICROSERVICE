@@ -2,9 +2,13 @@ package co.com.muric.entities.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,104 +28,115 @@ public class MovimientosCartera {
     @Column(name = "IDENTIFICACION_CREDITO_ENTIDAD", length = 50)
     private String identificacionCreditoEntidad;
 
-    @Size(max = 50)
-    @Column(name = "TIPO_IDENTIFICACION", length = 50)
-    private String tipoIdentificacion;
+    @Column(name = "TIPO_IDENTIFICACION")
+    private MuricEnums tipoIdentificacion;
 
     @Size(max = 50)
     @Column(name = "NUMERO_INDENTIFICACION", length = 50)
     private String numeroIdentificacion;
 
-    @Size(max = 50)
-    @Column(name = "FECHA_CORTE", length = 50)
-    private String fechaCorte;
+    @Column(name = "FECHA_CORTE")
+    @CreatedDate
+    private LocalDateTime fechaCorte;
 
-    @Size(max = 50)
-    @Column(name = "CALIFICACION_CREDITO", length = 50)
-    private String calificacionCredito;
+    @Column(name = "CALIFICACION_CREDITO")
+    private MuricEnums calificacionCredito;
 
-    @Size(max = 50)
     @Column(name = "ESTADO", length = 50)
-    private String estado;
+    private MuricEnums estado;
 
-    @Size(max = 50)
-    @Column(name = "PERIODO_GRACIA", length = 50)
-    private String periodoGracia;
+    @Column(name = "PERIODO_GRACIA")
+    private MuricEnums periodoGracia;
 
-    @Size(max = 50)
-    @Column(name = "DIAS_MORA", length = 50)
-    private String diasMora;
+    @Column(name = "DIAS_MORA")
+    @NotNull(message = "El tipo de reporte no puede ser nulo")
+    @Min(value = 1, message = "El tipo de reporte debe ser al menos 1")
+    @Max(value = 100, message = "El tipo de reporte no puede exceder 100")
+    @Size(max = 200)
+    private Integer diasMora;
 
-    @Size(max = 50)
-    @Column(name = "TASA_INTERES", length = 50)
-    private String tasaInteres;
+    @Column(name = "TASA_INTERES", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double tasaInteres;
 
-    @Size(max = 50)
-    @Column(name = "SPREAD_TASA_INTERES", length = 50)
-    private String spreadTasaInteres;
+    @Column(name = "SPREAD_TASA_INTERES", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double spreadTasaInteres;
 
-    @Size(max = 50)
-    @Column(name = "SALDO_CAPITAL", length = 50)
-    private String saldoCapital;
+    @Column(name = "SALDO_CAPITAL", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double saldoCapital;
 
-    @Size(max = 50)
-    @Column(name = "SALDO_INTERES", length = 50)
-    private String saldoInteres;
+    @Column(name = "SALDO_INTERES", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double saldoInteres;
 
-    @Size(max = 50)
-    @Column(name = "SALDO_OTROS", length = 50)
-    private String saldoOtros;
+    @Column(name = "SALDO_OTROS", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double saldoOtros;
 
-    @Size(max = 50)
     @Column(name = "MODELO_PROVISIONES", length = 50)
-    private String modeloProvisiones;
+    private MuricEnums modeloProvisiones;
 
-    @Size(max = 50)
-    @Column(name = "PROVISION_PROCICLIICA", length = 50)
-    private String provisionProciclica;
+    @Column(name = "PROVISION_PROCICLIICA", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double provisionProciclica;
 
-    @Size(max = 50)
-    @Column(name = "PROVISION_CONTRACICLICA", length = 50)
-    private String provisionContraclica;
+    @Column(name = "PROVISION_CONTRACICLICA", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double provisionContraclica;
 
-    @Size(max = 50)
-    @Column(name = "PROVISION_ADICIONAL_POLITICA_ENTIDAD", length = 50)
-    private String provisionAdicionalPoliticaEntidad;
+    @Column(name = "PROVISION_ADICIONAL_POLITICA_ENTIDAD", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double provisionAdicionalPoliticaEntidad;
 
-    @Size(max = 50)
-    @Column(name = "PROVISION_OTROS", length = 50)
-    private String provisionOtros;
+    @Column(name = "PROVISION_OTROS", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double provisionOtros;
 
-    @Size(max = 50)
-    @Column(name = "CUOTA_ESPERADA_CAPITAL", length = 50)
-    private String cuotaEsperadaCapital;
+    @Column(name = "CUOTA_ESPERADA_CAPITAL", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double cuotaEsperadaCapital;
 
-    @Size(max = 50)
-    @Column(name = "CUOTA_ESPERADA_INTERES", length = 50)
-    private String cuotaEsperadaInteres;
+    @Column(name = "CUOTA_ESPERADA_INTERES", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double cuotaEsperadaInteres;
 
-    @Size(max = 50)
-    @Column(name = "CUOTA_RECIBIDA_CAPITAL", length = 50)
-    private String cuotaRecibidaCapital;
+    @Column(name = "CUOTA_RECIBIDA_CAPITAL", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double cuotaRecibidaCapital;
 
-    @Size(max = 50)
-    @Column(name = "CUOTA_RECIBIDA_INTERES", length = 50)
-    private String cuotaRecibidaInteres;
+    @Column(name = "CUOTA_RECIBIDA_INTERES", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double cuotaRecibidaInteres;
 
-    @Size(max = 50)
-    @Column(name = "VALOR_GARANTIA", length = 50)
-    private String valorGarantia;
+    @Column(name = "VALOR_GARANTIA")
+    private MuricEnums valorGarantia;
 
-    @Size(max = 50)
-    @Column(name = "FECHA_GARANTIA", length = 50)
-    private String fechaGarantia;
+    @Column(name = "FECHA_GARANTIA")
+    @CreatedDate
+    private LocalDateTime fechaGarantia;
 
-    @Size(max = 50)
-    @Column(name = "PROBABILIDAD_INCUMPLIMIENTO_CREDITO", length = 50)
-    private String probabilidadIncumplimientoCredito;
+    @Column(name = "PROBABILIDAD_INCUMPLIMIENTO_CREDITO", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double probabilidadIncumplimientoCredito;
 
-    @Size(max = 50)
-    @Column(name = "PERDIDA_DADO_INCUMPLIMIENTO", length = 50)
-    private String perdidaDadoIncumplimientoCredito;
+    @Column(name = "PERDIDA_DADO_INCUMPLIMIENTO", precision = 10, scale = 2)
+    @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
+    private Double perdidaDadoIncumplimientoCredito;
+
+    @Size(max = 200)
+    @Column(name = "ESTADO_REGISTRO", length = 200)
+    private MuricEnums estadoRegistro;
+
+    @OneToMany(mappedBy = "movimientosCartera", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AtributosCredito> atributosCredito;
+
+    @OneToOne(mappedBy = "movimientosCartera", cascade = CascadeType.ALL, optional = true)
+    private InsumosCredito insumosCredito;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "entidad_id")
+    private Entidad entidad;
 
 }
