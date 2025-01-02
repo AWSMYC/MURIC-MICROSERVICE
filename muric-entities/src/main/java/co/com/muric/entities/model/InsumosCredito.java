@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "INSUMOS_CREDITO")
+@Table(name = "insumos_credito")
 @EntityListeners(AuditingEntityListener.class)
 public class InsumosCredito {
     @Id
@@ -23,60 +23,55 @@ public class InsumosCredito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "IDENTIFICACION_CREDITO_ENTIDAD")
+    @Column(name = "identificacion_credito_entidad")
     @NotNull(message = "El codigo de entidad no puede ser nulo")
     @Min(value = 1, message = "El codigo de entidad debe ser al menos 1")
     @Max(value = 100, message = "El codigo de entidad no puede exceder 100")
-    @Size(max = 200)
     private String identificacionCreditoEntidad;
 
-    @Column(name = "TIPO_IDENTIFICACION")
+    @Column(name = "tipo_identificacion")
     private MuricEnums tipoIdentificacion;
 
-    @Size(max = 200)
-    @Column(name = "NUMERO_INDENTIFICACION", length = 200)
+    @Column(name = "numero_identificacion")
     private String numeroIdentificacion;
 
-    @Column(name = "MODALIDAD")
+    @Column(name = "modalidad")
     private MuricEnums modalidad;
 
-    @Column(name = "CODIGO_PRODUCTO")
+    @Column(name = "codigo_producto")
     private MuricEnums codigoProducto;
 
-    @Column(name = "CALIDAD_DEUDOR")
+    @Column(name = "calidad_deudor")
     private MuricEnums calidadDeudor;
 
-    @Column(name = "FECHA_DESEMBOLSO")
+    @Column(name = "fecha_desembolso")
     @CreatedDate
     private LocalDateTime fechaDesembolso;
 
-    @Column(name = "FECHA_VENCIMIENTO")
+    @Column(name = "fecha_vencimiento")
     @CreatedDate
     private LocalDateTime fechaVencimiento;
 
-    @Column(name = "VALOR_DESEMBOLSADO", precision = 10, scale = 2)
+    @Column(name = "valor_desembolsado", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double valorDesembolsado;
 
-    @Column(name = "FRECUENCIA_PAGO_CAPITAL")
+    @Column(name = "frecuencia_pago_capital")
     private MuricEnums frecuenciaPagoCapital;
 
-    @Column(name = "FRECUENCIA_PAGO_INTERESES", length = 200)
+    @Column(name = "frecuencia_pago_intereses")
     private MuricEnums frecuenciaPagoIntereses;
 
-    @Column(name = "TIPO_TASA")
+    @Column(name = "tipo_tasa")
     private MuricEnums tipoTasa;
 
-    @Size(max = 200)
-    @Column(name = "TIPO_GARANTIA", length = 200)
+    @Column(name = "tipo_garantia")
     private MuricEnums tipoGarantia;
 
-    @Size(max = 200)
-    @Column(name = "MONEDA", length = 200)
+    @Column(name = "moneda")
     private MuricEnums moneda;
 
-    @Size(max = 200)
-    @Column(name = "ESTADO_REGISTRO", length = 200)
+    @Column(name = "estado_registro")
     private MuricEnums estadoRegistro;
 
     @OneToOne(fetch = FetchType.LAZY)

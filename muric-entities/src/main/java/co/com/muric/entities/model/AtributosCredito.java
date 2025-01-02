@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ATRIBUTOS_CREDITO")
+@Table(name = "atributos_credito")
 @EntityListeners(AuditingEntityListener.class)
 public class AtributosCredito {
     @Id
@@ -20,25 +20,22 @@ public class AtributosCredito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50)
-    @Column(name = "IDENTIFICACION_CREDITO_ENTIDAD", length = 50)
+    @Column(name = "identificacion_credito_entidad")
     private String identificacionCreditoEntidad;
 
-    @Column(name = "TIPO_IDENTIFICACION")
+    @Column(name = "tipo_identificacion")
     private MuricEnums tipoIdentificacion;
 
-    @Size(max = 50)
-    @Column(name = "NUMERO_INDENTIFICACION", length = 50)
+    @Column(name = "numero_identificacion")
     private String numeroIdentificacion;
 
-    @Column(name = "CLAVE_ATRIBUTO")
+    @Column(name = "clave_atributo")
     @NotNull(message = "El tipo de reporte no puede ser nulo")
     @Min(value = 1, message = "El tipo de reporte debe ser al menos 1")
     @Max(value = 100, message = "El tipo de reporte no puede exceder 100")
-    @Size(max = 200)
-    private String claveAtributo;
+    private Integer claveAtributo;
 
-    @Column(name = "VALOR_ATRIBUTO", precision = 10, scale = 2)
+    @Column(name = "valor_atributo", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double valorAtributo;
 

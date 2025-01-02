@@ -31,25 +31,21 @@ public class Entidad {
     @NotNull(message = "El tipo de entidad no puede ser nulo")
     @Min(value = 1, message = "El tipo de entidad debe ser al menos 1")
     @Max(value = 100, message = "El tipo de entidad no puede exceder 100")
-    @Size(max = 200)
     private Integer tipoEntidad;
 
     @Column(name = "codigo_entidad")
     @NotNull(message = "El codigo de entidad no puede ser nulo")
     @Min(value = 1, message = "El codigo de entidad debe ser al menos 1")
     @Max(value = 100, message = "El codigo de entidad no puede exceder 100")
-    @Size(max = 200)
     private String codigoEntidad;
 
-    @Size(min = 1, max = 200)
-    @Column(name = "nombre_entidad", length = 200)
+    @Column(name = "nombre_entidad")
     private String nombreEntidad;
 
     @Column(name = "tipo_reporte")
     @NotNull(message = "El tipo de reporte no puede ser nulo")
     @Min(value = 1, message = "El tipo de reporte debe ser al menos 1")
     @Max(value = 100, message = "El tipo de reporte no puede exceder 100")
-    @Size(max = 200)
     private Integer tipoReporte;
 
     @Column(name = "fecha_corte")
@@ -60,16 +56,13 @@ public class Entidad {
     @CreatedDate
     private LocalDateTime fechaGeneracion;
 
-    @Size(min = 1, max = 500)
-    @Column(name = "comentarios",  length = 500)
+    @Column(name = "comentarios")
     private String comentarios;
 
-    @Size(min = 1, max = 200)
-    @Column(name = "firma",  length = 200)
+    @Column(name = "firma")
     private String firma;
 
-    @Size(max = 200)
-    @Column(name = "palabra_clave", length = 200)
+    @Column(name = "palabra_clave")
     private String palabraClave;
 
     @OneToMany(mappedBy = "entidad", cascade = CascadeType.ALL, orphanRemoval = true)

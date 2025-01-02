@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "MOVIMIENTOS_CARTERA")
+@Table(name = "movimientos_cartera")
 @EntityListeners(AuditingEntityListener.class)
 public class MovimientosCartera {
     @Id
@@ -24,109 +24,105 @@ public class MovimientosCartera {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50)
-    @Column(name = "IDENTIFICACION_CREDITO_ENTIDAD", length = 50)
+    @Column(name = "identificacion_credito_entidad")
     private String identificacionCreditoEntidad;
 
-    @Column(name = "TIPO_IDENTIFICACION")
+    @Column(name = "tipo_identificacion")
     private MuricEnums tipoIdentificacion;
 
-    @Size(max = 50)
-    @Column(name = "NUMERO_INDENTIFICACION", length = 50)
+    @Column(name = "numero_identificacion")
     private String numeroIdentificacion;
 
-    @Column(name = "FECHA_CORTE")
+    @Column(name = "fecha_corte")
     @CreatedDate
     private LocalDateTime fechaCorte;
 
-    @Column(name = "CALIFICACION_CREDITO")
+    @Column(name = "calificacion_credito")
     private MuricEnums calificacionCredito;
 
-    @Column(name = "ESTADO", length = 50)
+    @Column(name = "estado")
     private MuricEnums estado;
 
-    @Column(name = "PERIODO_GRACIA")
+    @Column(name = "periodo_gracia")
     private MuricEnums periodoGracia;
 
-    @Column(name = "DIAS_MORA")
+    @Column(name = "dias_mora")
     @NotNull(message = "El tipo de reporte no puede ser nulo")
     @Min(value = 1, message = "El tipo de reporte debe ser al menos 1")
     @Max(value = 100, message = "El tipo de reporte no puede exceder 100")
-    @Size(max = 200)
     private Integer diasMora;
 
-    @Column(name = "TASA_INTERES", precision = 10, scale = 2)
+    @Column(name = "tasa_interes", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double tasaInteres;
 
-    @Column(name = "SPREAD_TASA_INTERES", precision = 10, scale = 2)
+    @Column(name = "spread_tasa_interes", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double spreadTasaInteres;
 
-    @Column(name = "SALDO_CAPITAL", precision = 10, scale = 2)
+    @Column(name = "saldo_capital", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double saldoCapital;
 
-    @Column(name = "SALDO_INTERES", precision = 10, scale = 2)
+    @Column(name = "saldo_intereses", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double saldoInteres;
 
-    @Column(name = "SALDO_OTROS", precision = 10, scale = 2)
+    @Column(name = "saldo_otros", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double saldoOtros;
 
-    @Column(name = "MODELO_PROVISIONES", length = 50)
+    @Column(name = "modelo_provisiones", length = 50)
     private MuricEnums modeloProvisiones;
 
-    @Column(name = "PROVISION_PROCICLIICA", precision = 10, scale = 2)
+    @Column(name = "provision_prociclica", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double provisionProciclica;
 
-    @Column(name = "PROVISION_CONTRACICLICA", precision = 10, scale = 2)
+    @Column(name = "provision_contraciclica", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double provisionContraclica;
 
-    @Column(name = "PROVISION_ADICIONAL_POLITICA_ENTIDAD", precision = 10, scale = 2)
+    @Column(name = "provision_adicional_politica_entidad", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double provisionAdicionalPoliticaEntidad;
 
-    @Column(name = "PROVISION_OTROS", precision = 10, scale = 2)
+    @Column(name = "provision_otros", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double provisionOtros;
 
-    @Column(name = "CUOTA_ESPERADA_CAPITAL", precision = 10, scale = 2)
+    @Column(name = "cuota_esperada_capital", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double cuotaEsperadaCapital;
 
-    @Column(name = "CUOTA_ESPERADA_INTERES", precision = 10, scale = 2)
+    @Column(name = "cuota_esperada_intereses", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double cuotaEsperadaInteres;
 
-    @Column(name = "CUOTA_RECIBIDA_CAPITAL", precision = 10, scale = 2)
+    @Column(name = "cuota_recibida_capital", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double cuotaRecibidaCapital;
 
-    @Column(name = "CUOTA_RECIBIDA_INTERES", precision = 10, scale = 2)
+    @Column(name = "cuota_recibida_intereses", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double cuotaRecibidaInteres;
 
-    @Column(name = "VALOR_GARANTIA")
+    @Column(name = "valor_garantia")
     private MuricEnums valorGarantia;
 
-    @Column(name = "FECHA_GARANTIA")
+    @Column(name = "fecha_garantia")
     @CreatedDate
     private LocalDateTime fechaGarantia;
 
-    @Column(name = "PROBABILIDAD_INCUMPLIMIENTO_CREDITO", precision = 10, scale = 2)
+    @Column(name = "probabilidad_incumplimiento_credito", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double probabilidadIncumplimientoCredito;
 
-    @Column(name = "PERDIDA_DADO_INCUMPLIMIENTO", precision = 10, scale = 2)
+    @Column(name = "perdida_dado_incumplimiento", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
     private Double perdidaDadoIncumplimientoCredito;
 
-    @Size(max = 200)
-    @Column(name = "ESTADO_REGISTRO", length = 200)
+    @Column(name = "estado_registro")
     private MuricEnums estadoRegistro;
 
     @OneToMany(mappedBy = "movimientosCartera", cascade = CascadeType.ALL, orphanRemoval = true)
