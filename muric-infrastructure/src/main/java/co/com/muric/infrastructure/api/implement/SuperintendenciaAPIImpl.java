@@ -23,7 +23,7 @@ public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
         String authToken = null;
         Integer responseCode = null;
         try {
-            String jsonBody = String.format("{\"usuario\":\"%s\",\"contrasena\":\"%s=\"}", USER_NAME, PASSWORD);
+            String jsonBody = new ObjectMapper().writeValueAsString(avro);
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = RequestBody.create(jsonBody, mediaType);
             Request request = new Request.Builder()
