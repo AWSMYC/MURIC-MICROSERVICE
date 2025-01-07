@@ -28,7 +28,7 @@ public class MovimientosCartera {
     private String identificacionCreditoEntidad;
 
     @Column(name = "tipo_identificacion")
-    private MuricEnums tipoIdentificacion;
+    private MuricField tipoIdentificacion;
 
     @Column(name = "numero_identificacion")
     private String numeroIdentificacion;
@@ -38,13 +38,13 @@ public class MovimientosCartera {
     private LocalDateTime fechaCorte;
 
     @Column(name = "calificacion_credito")
-    private MuricEnums calificacionCredito;
+    private MuricField calificacionCredito;
 
     @Column(name = "estado")
-    private MuricEnums estado;
+    private MuricField estado;
 
     @Column(name = "periodo_gracia")
-    private MuricEnums periodoGracia;
+    private MuricField periodoGracia;
 
     @Column(name = "dias_mora")
     @NotNull(message = "El tipo de reporte no puede ser nulo")
@@ -73,7 +73,7 @@ public class MovimientosCartera {
     private Double saldoOtros;
 
     @Column(name = "modelo_provisiones", length = 50)
-    private MuricEnums modeloProvisiones;
+    private MuricField modeloProvisiones;
 
     @Column(name = "provision_prociclica", precision = 10, scale = 2)
     @Digits(integer = 10, fraction = 2, message = "El valor debe tener hasta 12 dígitos enteros y 2 decimales")
@@ -108,7 +108,7 @@ public class MovimientosCartera {
     private Double cuotaRecibidaInteres;
 
     @Column(name = "valor_garantia")
-    private MuricEnums valorGarantia;
+    private MuricField valorGarantia;
 
     @Column(name = "fecha_garantia")
     @CreatedDate
@@ -123,7 +123,7 @@ public class MovimientosCartera {
     private Double perdidaDadoIncumplimientoCredito;
 
     @Column(name = "estado_registro")
-    private MuricEnums estadoRegistro;
+    private MuricField estadoRegistro;
 
     @OneToMany(mappedBy = "movimientosCartera", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AtributosCredito> atributosCredito;

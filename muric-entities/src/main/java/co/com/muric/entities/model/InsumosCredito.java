@@ -30,19 +30,19 @@ public class InsumosCredito {
     private String identificacionCreditoEntidad;
 
     @Column(name = "tipo_identificacion")
-    private MuricEnums tipoIdentificacion;
+    private MuricField tipoIdentificacion;
 
     @Column(name = "numero_identificacion")
     private String numeroIdentificacion;
 
     @Column(name = "modalidad")
-    private MuricEnums modalidad;
+    private MuricField modalidad;
 
     @Column(name = "codigo_producto")
-    private MuricEnums codigoProducto;
+    private MuricField codigoProducto;
 
     @Column(name = "calidad_deudor")
-    private MuricEnums calidadDeudor;
+    private MuricField calidadDeudor;
 
     @Column(name = "fecha_desembolso")
     @CreatedDate
@@ -57,22 +57,22 @@ public class InsumosCredito {
     private Double valorDesembolsado;
 
     @Column(name = "frecuencia_pago_capital")
-    private MuricEnums frecuenciaPagoCapital;
+    private MuricField frecuenciaPagoCapital;
 
     @Column(name = "frecuencia_pago_intereses")
-    private MuricEnums frecuenciaPagoIntereses;
+    private MuricField frecuenciaPagoIntereses;
 
     @Column(name = "tipo_tasa")
-    private MuricEnums tipoTasa;
+    private MuricField tipoTasa;
 
     @Column(name = "tipo_garantia")
-    private MuricEnums tipoGarantia;
+    private MuricField tipoGarantia;
 
     @Column(name = "moneda")
-    private MuricEnums moneda;
+    private MuricField moneda;
 
     @Column(name = "estado_registro")
-    private MuricEnums estadoRegistro;
+    private MuricField estadoRegistro;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movimientos_cartera_id")

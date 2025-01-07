@@ -24,7 +24,7 @@ public class AtributosCredito {
     private String identificacionCreditoEntidad;
 
     @Column(name = "tipo_identificacion")
-    private MuricEnums tipoIdentificacion;
+    private MuricField tipoIdentificacion;
 
     @Column(name = "numero_identificacion")
     private String numeroIdentificacion;

@@ -4,4 +4,5 @@ import co.com.muric.entities.dto.MuricResponseDTO;
 
 public interface ISuperintendenciaAPI {
     MuricResponseDTO sendAvro();
+    MuricResponseDTO superFinancieraAuth();
 }
