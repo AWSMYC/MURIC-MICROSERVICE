@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
     private static final Logger logger = LogManager.getLogger(SuperintendenciaAPIImpl.class);
-    private static final String API_URL = "https://apidev.superfinanciera.gov.co/v2/services/auth";
+    private static final String AUTH_API_URL = "https://apidev.superfinanciera.gov.co/v2/services/auth";
     private static final String USER_NAME = "nombre_usuario";
     private static final String PASSWORD = "SmXpcm8wLjE5Nzgk";
 
@@ -30,7 +30,7 @@ public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = RequestBody.create(jsonBody, mediaType);
             Request request = new Request.Builder()
-                    .url(API_URL)
+                    .url(AUTH_API_URL)
                     .post(requestBody)
                     .addHeader("Content-Type", "application/json")
                     .build();
