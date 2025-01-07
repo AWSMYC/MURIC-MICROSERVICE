@@ -56,18 +56,18 @@ public class MuricServiceImpl implements IMuricService {
 
 
     private MuricResponseDTO generateAvroFromFiles(){
-        avroMapper();
+        superintendenciaAPI.sendAvro(avroMapper());
         return MuricResponseDTO.builder().build();
     }
 
     private MuricResponseDTO generateAvroFromDataBase() {
         muricRepository.findData();
-        avroMapper();
+        superintendenciaAPI.sendAvro(avroMapper());
         return MuricResponseDTO.builder().build();
     }
 
     private MuricResponseDTO sendAvro(){
-        superintendenciaAPI.sendAvro();
+        superintendenciaAPI.sendAvro(Avro.builder().build());
         return MuricResponseDTO.builder().build();
     }
 
