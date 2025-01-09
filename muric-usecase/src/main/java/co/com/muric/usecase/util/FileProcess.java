@@ -17,6 +17,8 @@ import java.util.Set;
 public class FileProcess {
 
         public static List<FileData> readFile(String filePath) throws IOException {
+            //TODO Falta dividir la estructura de los archivos segun el modelo pendiente
+
             FileInputStream fis = new FileInputStream(new File(filePath));
             Workbook workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(0);
