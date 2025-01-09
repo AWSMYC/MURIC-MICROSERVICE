@@ -1,6 +1,6 @@
 package co.com.muric.web.rest;
 
-import co.com.muric.usecase.implement.IMuricService;
+import co.com.muric.usecase.interfaces.IMuricService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

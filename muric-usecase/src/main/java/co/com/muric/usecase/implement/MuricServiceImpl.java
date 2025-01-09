@@ -1,18 +1,20 @@
-package co.com.muric.usecase.interfaces;
+package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.Avro;
 import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.model.MuricField;
+import co.com.muric.entities.util.FileData;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
-import co.com.muric.usecase.implement.IMuricService;
+import co.com.muric.usecase.interfaces.IMuricService;
+import co.com.muric.usecase.util.FileProcess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -50,19 +52,23 @@ public class MuricServiceImpl implements IMuricService {
             logger.error("Error inesperado: " + e.getMessage(), e);
             muricResponseDTO = MuricResponseDTO.builder().codeRespose(500).msgRespose("Error inesperado al generar AVRO").build();
         }
-
         return muricResponseDTO;
     }
 
 
-    private MuricResponseDTO generateAvroFromFiles(){
-        superintendenciaAPI.sendAvro(avroMapper());
+    private MuricResponseDTO generateAvroFromFiles() throws IOException {
+        try {
+            avroMapper(FileProcess.readFile("/Users/kristianhdez/Documents"));
+            superintendenciaAPI.sendAvro(Avro.builder().build());
+        } catch (IOException io) {
+            logger.error("Error al procesar el archivo: " + io.getMessage(), io);
+        }
         return MuricResponseDTO.builder().build();
     }
 
     private MuricResponseDTO generateAvroFromDataBase() {
         muricRepository.findData();
-        superintendenciaAPI.sendAvro(avroMapper());
+        superintendenciaAPI.sendAvro(Avro.builder().build());
         return MuricResponseDTO.builder().build();
     }
 
@@ -71,7 +77,7 @@ public class MuricServiceImpl implements IMuricService {
         return MuricResponseDTO.builder().build();
     }
 
-    private Avro avroMapper() {
+    private Avro avroMapper(List<FileData> fileDataList) {
         List<Object> creditoFields = new ArrayList<>();
         List<Object> movimientoFields = new ArrayList<>();
         List<Object> demograficoFields = new ArrayList<>();
@@ -96,4 +102,5 @@ public class MuricServiceImpl implements IMuricService {
                 .demograficoFields(demograficoFields)
                 .build();
     }
+
 }

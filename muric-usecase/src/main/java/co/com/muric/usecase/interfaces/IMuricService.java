@@ -1,4 +1,4 @@
-package co.com.muric.usecase.implement;
+package co.com.muric.usecase.interfaces;
 
 import co.com.muric.entities.dto.MuricResponseDTO;
 
