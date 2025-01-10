@@ -20,6 +20,8 @@ import java.util.*;
 @AllArgsConstructor
 public class MuricServiceImpl implements IMuricService {
     private static final Logger logger = LogManager.getLogger(MuricServiceImpl.class);
+    private static final String SOURCE_FILE = "FILE";
+    private static final String SOURCE_DB = "DATABASE";
 
     private IMuricRepository muricRepository;
     private ISuperintendenciaAPI superintendenciaAPI;
@@ -29,14 +31,14 @@ public class MuricServiceImpl implements IMuricService {
         MuricResponseDTO muricResponseDTO;
         try {
             switch (source.toUpperCase()) {
-                case "FILE":
+                case SOURCE_FILE:
                     muricResponseDTO = generateAvroFromFiles();
                     if (muricResponseDTO != null && muricResponseDTO.getCodeRespose() == 200) {
                         break;
                     }
                     logger.error("Error al obtener la información desde archivos: Respuesta inválida.");
                     break;
-                case "DATABASE":
+                case SOURCE_DB:
                     muricResponseDTO = generateAvroFromDataBase();
                     if (muricResponseDTO != null && muricResponseDTO.getCodeRespose() == 200) {
                         break;
