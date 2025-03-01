@@ -1,14 +1,14 @@
 package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.Avro;
-import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.model.MuricField;
-import co.com.muric.entities.util.FileData;
-import co.com.muric.usecase.util.FileProcess;
+import co.com.muric.entities.util.AtributoCreditoDeuda;
+import co.com.muric.entities.util.InformacionCredito;
+import co.com.muric.entities.util.MovimientoCartera;
+import co.com.muric.usecase.util.FileDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,12 @@ public class ProcessFile {
 
     private static final Logger logger = LogManager.getLogger(ProcessFile.class);
 
-    public static Avro generateAvroFromFiles() throws IOException {
+    public static Avro generateAvroFromFiles(String source) throws IOException {
         try {
-           return avroMapper(FileProcess.readFile("/Users/kristianhdez/Documents"));
+            List<InformacionCredito> informacionCreditoList = FileDataSource.readSheetInformacionCredito(source);
+            List<AtributoCreditoDeuda> atributoCreditoDeudaList = FileDataSource.readSheetAtributoCreditoDeuda(source);
+            List<MovimientoCartera> movimientoCarteraList = FileDataSource.readSheetMovimientoCartera(source);
+
         } catch (IOException io) {
             logger.error("Error al procesar el archivo: " + io.getMessage(), io);
         }
@@ -33,7 +36,7 @@ public class ProcessFile {
         return Avro.builder().build();
     }
 
-    private static Avro avroMapper(List<FileData> fileDataList) {
+    private static Avro avroMapper(List<InformacionCredito> fileDataList) {
         List<Object> creditoFields = new ArrayList<>();
         List<Object> movimientoFields = new ArrayList<>();
         List<Object> demograficoFields = new ArrayList<>();

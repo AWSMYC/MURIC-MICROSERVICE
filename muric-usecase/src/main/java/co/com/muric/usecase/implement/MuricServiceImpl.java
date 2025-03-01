@@ -27,7 +27,7 @@ public class MuricServiceImpl implements IMuricService {
             Avro avroData;
             switch (type.toUpperCase()) {
                 case StaticVariables.SOURCE_FILE:
-                    avroData = ProcessFile.generateAvroFromFiles();
+                    avroData = ProcessFile.generateAvroFromFiles(source);
                     if (null!=avroData) {
                         break;
                     }
