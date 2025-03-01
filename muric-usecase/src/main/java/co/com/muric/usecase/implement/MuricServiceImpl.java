@@ -8,11 +8,13 @@ import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.interfaces.IMuricService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
+import java.text.MessageFormat;
+
 @Service
-@AllArgsConstructor
 public class MuricServiceImpl implements IMuricService {
     private static final Logger logger = LogManager.getLogger(MuricServiceImpl.class);
 
@@ -23,38 +25,39 @@ public class MuricServiceImpl implements IMuricService {
     public MuricResponseDTO generateAvro(String source, String type) {
         try {
             Avro avroData;
-            switch (source.toUpperCase()) {
+            switch (type.toUpperCase()) {
                 case StaticVariables.SOURCE_FILE:
                     avroData = ProcessFile.generateAvroFromFiles();
                     if (null!=avroData) {
                         break;
                     }
-                    logger.error("Error al obtener la información desde archivos: Respuesta inválida.");
+                    logger.error(StaticVariables.PROCESS_FILE_ERROR);
                     break;
                 case StaticVariables.SOURCE_DB:
-                    avroData = ProcessFile.generateAvroFromFiles();
+                    avroData = ProcessFile.generateAvroFromDataBase();
                     if (null!=avroData) {
                         break;
                     }
-                    logger.error("Error al obtener la información desde base de datos: Respuesta inválida.");
+                    logger.error(StaticVariables.PROCESS_DATABASE_ERROR);
                     break;
                 default:
-                    logger.error("Fuente no válida: {}", source);
-                    avroData =  Avro.builder().build();
+                    if (!type.equalsIgnoreCase(StaticVariables.SOURCE_FILE) && !type.equalsIgnoreCase(StaticVariables.SOURCE_DB)) {
+                        logger.error(MessageFormat.format(StaticVariables.INVALID_INPUT_DATA,type));
+                        return MuricResponseDTO.builder()
+                                .resposeCode(HttpStatus.BAD_REQUEST.value())
+                                .responseType(HttpStatus.BAD_REQUEST.toString())
+                                .resposeMessage(MessageFormat.format(StaticVariables.INVALID_INPUT_DATA,type))
+                                .build();
+                    }
             }
         } catch (Exception e) {
-            logger.error("Error inesperado: " + e.getMessage(), e);
+            logger.error(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR,e));
             return MuricResponseDTO.builder()
-                    .codeRespose(500)
-                    .msgRespose("")
+                    .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                    .resposeMessage(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR,e))
                     .build();
         }
-        return MuricResponseDTO.builder().build();
-    }
-
-    private MuricResponseDTO generateAvroFromDataBase() {
-        muricRepository.findData();
-        superintendenciaAPI.sendAvro(Avro.builder().build());
         return MuricResponseDTO.builder().build();
     }
 

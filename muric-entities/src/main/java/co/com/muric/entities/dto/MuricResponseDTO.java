@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MuricResponseDTO {
-    private Integer codeRespose;
-    private String msgRespose;
+    private Integer resposeCode;
+    private String responseType;
+    private String resposeMessage;
 }

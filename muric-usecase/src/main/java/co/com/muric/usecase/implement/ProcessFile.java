@@ -27,6 +27,12 @@ public class ProcessFile {
         return null;
     }
 
+    public static Avro generateAvroFromDataBase() {
+        //muricRepository.findData();
+        //superintendenciaAPI.sendAvro(Avro.builder().build());
+        return Avro.builder().build();
+    }
+
     private static Avro avroMapper(List<FileData> fileDataList) {
         List<Object> creditoFields = new ArrayList<>();
         List<Object> movimientoFields = new ArrayList<>();

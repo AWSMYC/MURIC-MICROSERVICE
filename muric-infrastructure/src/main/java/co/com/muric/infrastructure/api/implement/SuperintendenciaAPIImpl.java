@@ -45,8 +45,8 @@ public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
             logger.error("Error al intentar generar la autenticación: {}", e.getMessage(), e);
         }
         return MuricResponseDTO.builder()
-                .codeRespose(responseCode)
-                .msgRespose(authToken)
+                .resposeCode(responseCode)
+                .resposeMessage(authToken)
                 .build();
     }
 
@@ -77,8 +77,8 @@ public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
             logger.error("Error al intentar generar la autenticación: {}", e.getMessage(), e);
         }
         return MuricResponseDTO.builder()
-                .codeRespose(responseCode)
-                .msgRespose(authToken)
+                .resposeCode(responseCode)
+                .resposeMessage(authToken)
                 .build();
     }
 
