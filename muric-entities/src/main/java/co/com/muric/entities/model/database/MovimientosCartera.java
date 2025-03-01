@@ -1,4 +1,4 @@
-package co.com.muric.entities.model;
+package co.com.muric.entities.model.database;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

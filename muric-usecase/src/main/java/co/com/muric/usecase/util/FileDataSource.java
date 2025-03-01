@@ -1,8 +1,8 @@
 package co.com.muric.usecase.util;
 
-import co.com.muric.entities.util.AtributoCreditoDeuda;
-import co.com.muric.entities.util.InformacionCredito;
-import co.com.muric.entities.util.MovimientoCartera;
+import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
+import co.com.muric.entities.model.excel.InformacionCredito;
+import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.util.StaticVariables;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;

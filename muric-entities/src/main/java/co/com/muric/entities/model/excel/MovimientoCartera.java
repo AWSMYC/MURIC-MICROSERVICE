@@ -1,4 +1,4 @@
-package co.com.muric.entities.util;
+package co.com.muric.entities.model.excel;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

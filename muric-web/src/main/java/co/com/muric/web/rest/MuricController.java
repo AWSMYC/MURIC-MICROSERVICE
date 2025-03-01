@@ -31,7 +31,13 @@ public class MuricController {
                        .responseType(HttpStatus.BAD_REQUEST.toString())
                        .resposeMessage(StaticVariables.INVALID_TYPE_PARAM)
                        .build());
-            } else if(type.equalsIgnoreCase(StaticVariables.SOURCE_FILE) && source.isBlank()){
+            } else if (!type.equalsIgnoreCase(StaticVariables.TYPE_FILE) || !type.equalsIgnoreCase(StaticVariables.TYPE_DATABASE)){
+                return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
+                        .resposeCode(HttpStatus.BAD_REQUEST.value())
+                        .responseType(HttpStatus.BAD_REQUEST.toString())
+                        .resposeMessage(MessageFormat.format(StaticVariables.INVALID_TYPE_INPUT_DATA,type))
+                        .build());
+            }else if (type.equalsIgnoreCase(StaticVariables.TYPE_FILE) && source.isBlank()){
                return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
                        .resposeCode(HttpStatus.BAD_REQUEST.value())
                        .responseType(HttpStatus.BAD_REQUEST.toString())

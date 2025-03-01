@@ -1,11 +1,9 @@
 package co.com.muric.entities.dto;
 
-import co.com.muric.entities.model.MuricField;
-import co.com.muric.entities.util.InformacionCredito;
+import co.com.muric.entities.model.database.MuricField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter

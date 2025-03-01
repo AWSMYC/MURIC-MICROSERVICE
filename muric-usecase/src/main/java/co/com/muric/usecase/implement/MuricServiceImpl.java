@@ -25,7 +25,7 @@ public class MuricServiceImpl implements IMuricService {
         try {
             Avro avroData;
             switch (type.toUpperCase()) {
-                case StaticVariables.SOURCE_FILE:
+                case StaticVariables.TYPE_FILE:
                     avroData = ProcessFile.generateAvroFromFiles(source);
                     if (null!=avroData) {
                         return MuricResponseDTO.builder()
@@ -42,7 +42,7 @@ public class MuricServiceImpl implements IMuricService {
                                 .build();
 
                     }
-                case StaticVariables.SOURCE_DB:
+                case StaticVariables.TYPE_DATABASE:
                     avroData = ProcessFile.generateAvroFromDataBase();
                     if (null!=avroData) {
                         return MuricResponseDTO.builder()

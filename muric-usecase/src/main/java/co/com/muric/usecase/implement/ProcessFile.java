@@ -1,8 +1,8 @@
 package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.Avro;
-import co.com.muric.entities.model.MuricField;
-import co.com.muric.entities.util.InformacionCredito;
+import co.com.muric.entities.model.database.MuricField;
+import co.com.muric.entities.model.excel.InformacionCredito;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.usecase.util.FileDataSource;
 import org.apache.logging.log4j.LogManager;

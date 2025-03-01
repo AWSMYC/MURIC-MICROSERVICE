@@ -12,8 +12,8 @@ public class StaticVariables {
     public static final String PROCESS_DATABASE_OK = "Base de datos procesada correctamente";
     public static final String PROCESS_GENERIC_ERROR = "Error en el proceso {0}";
     public static final String PROCESS_DATABASE_ERROR = "Error al procesar registros desde la base de datos";
-    public static final String SOURCE_FILE = "FILE";
-    public static final String SOURCE_DB = "DATABASE";
+    public static final String TYPE_FILE = "FILE";
+    public static final String TYPE_DATABASE = "DATABASE";
     public static final String SOURCE_BLANK="Cannot invoke \"String.isBlank()\" because \"source\" is null";
     public static final String TYPE_BLANK="Cannot invoke \"String.isBlank()\" because \"type\" is null";
     public static final String BASE_REST_PATH="/muric";
@@ -21,7 +21,7 @@ public class StaticVariables {
     public static final String HEALHT_CHECK_AVRO_REST_PATH="/healthCheck";
     public static final String CROSSORIGINS="*";
     public static final String ALLOWHEADERS="*";
-    public static final String INVALID_INPUT_DATA="Bad Request - El valor {0} del parámetro type no es valido. El valor del parámetro type debe ser 'type=FILE' or 'type=DATABASE'";
+    public static final String INVALID_TYPE_INPUT_DATA="Bad Request - El valor => {0} <= del parámetro type no es valido. El valor del parámetro type debe ser type=FILE or type=DATABASE";
     public static final String COMPONENT_SCARN="co.com.muric";
 
     // FILE VARIABLES
