@@ -7,7 +7,9 @@ public class StaticVariables {
     public static final String SOURCE_REQUESTPARAM ="source";
     public static final String TYPE_REQUESTPARAM ="type";
     public static final String INVALID_SOURCE_TYPE_PARAM ="Los parámetros source y type son nulos - 400 Bad Request";
-    public static final String PROCESS_FILE_ERROR = "Error al procesar el archivo";
+    public static final String PROCESS_FILE_ERROR = "Error al procesar el archivo : {0}";
+    public static final String PROCESS_FILE_OK = "Archivo procesado correctamente";
+    public static final String PROCESS_DATABASE_OK = "Base de datos procesada correctamente";
     public static final String PROCESS_GENERIC_ERROR = "Error en el proceso {0}";
     public static final String PROCESS_DATABASE_ERROR = "Error al procesar registros desde la base de datos";
     public static final String SOURCE_FILE = "FILE";

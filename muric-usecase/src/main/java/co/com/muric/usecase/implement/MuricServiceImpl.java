@@ -10,12 +10,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
-
 import java.text.MessageFormat;
 
 @Service
 public class MuricServiceImpl implements IMuricService {
+
     private static final Logger logger = LogManager.getLogger(MuricServiceImpl.class);
 
     private IMuricRepository muricRepository;
@@ -30,28 +29,35 @@ public class MuricServiceImpl implements IMuricService {
                     avroData = ProcessFile.generateAvroFromFiles(source);
                     if (null!=avroData) {
                         return MuricResponseDTO.builder()
-                                .resposeCode(HttpStatus.BAD_REQUEST.value())
-                                .responseType(HttpStatus.BAD_REQUEST.toString())
-                                .resposeMessage(MessageFormat.format(StaticVariables.INVALID_INPUT_DATA,type))
+                                .resposeCode(HttpStatus.OK.value())
+                                .responseType(HttpStatus.OK.toString())
+                                .resposeMessage(StaticVariables.PROCESS_FILE_OK)
                                 .build();
+                    } else {
+                        logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, source));
+                        return MuricResponseDTO.builder()
+                                .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                                .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                                .resposeMessage(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, source))
+                                .build();
+
                     }
-                    logger.error(StaticVariables.PROCESS_FILE_ERROR);
-                    break;
                 case StaticVariables.SOURCE_DB:
                     avroData = ProcessFile.generateAvroFromDataBase();
                     if (null!=avroData) {
-                        break;
-                    }
-                    logger.error(StaticVariables.PROCESS_DATABASE_ERROR);
-                    break;
-                default:
-                    if (!type.equalsIgnoreCase(StaticVariables.SOURCE_FILE) && !type.equalsIgnoreCase(StaticVariables.SOURCE_DB)) {
-                        logger.error(MessageFormat.format(StaticVariables.INVALID_INPUT_DATA,type));
                         return MuricResponseDTO.builder()
-                                .resposeCode(HttpStatus.BAD_REQUEST.value())
-                                .responseType(HttpStatus.BAD_REQUEST.toString())
-                                .resposeMessage(MessageFormat.format(StaticVariables.INVALID_INPUT_DATA,type))
+                                .resposeCode(HttpStatus.OK.value())
+                                .responseType(HttpStatus.OK.toString())
+                                .resposeMessage(StaticVariables.PROCESS_DATABASE_OK)
                                 .build();
+                    } else {
+                        logger.error(StaticVariables.PROCESS_DATABASE_ERROR);
+                        return MuricResponseDTO.builder()
+                                .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                                .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                                .resposeMessage(StaticVariables.PROCESS_DATABASE_ERROR)
+                                .build();
+
                     }
             }
         } catch (Exception e) {

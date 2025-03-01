@@ -3,11 +3,13 @@ package co.com.muric.usecase.implement;
 import co.com.muric.entities.dto.Avro;
 import co.com.muric.entities.model.MuricField;
 import co.com.muric.entities.util.InformacionCredito;
+import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.usecase.util.FileDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +23,8 @@ public class ProcessFile {
             FileDataSource.readSheetInformacionCredito(source);
             FileDataSource.readSheetAtributoCreditoDeuda(source);
             FileDataSource.readSheetMovimientoCartera(source);
-
         } catch (IOException io) {
-            logger.error("Error al procesar el archivo: " + io.getMessage(), io);
+            logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR,io));
         }
         return Avro.builder()
                 .build();
