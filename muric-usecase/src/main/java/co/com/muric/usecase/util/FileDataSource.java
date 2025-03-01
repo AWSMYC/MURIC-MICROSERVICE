@@ -16,7 +16,7 @@ import java.util.function.Function;
 public class FileDataSource {
 
     static {
-        IOUtils.setByteArrayMaxOverride(200_000_000);
+        IOUtils.setByteArrayMaxOverride(Integer.MAX_VALUE);
     }
 
     public static List<InformacionCredito> readSheetInformacionCredito(String filePath) throws IOException {
