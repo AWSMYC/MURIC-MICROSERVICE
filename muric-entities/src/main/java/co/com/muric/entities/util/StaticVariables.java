@@ -2,7 +2,7 @@ package co.com.muric.entities.util;
 
 public class StaticVariables {
     // LOGS & MESSAGES VARIABLES
-    public static final String INVALID_TYPE_PARAM ="El parámetro 'type' es obligatorios (el valor de type es FILE o DATABASE).";
+    public static final String INVALID_TYPE_PARAM ="El parámetro 'type' es obligatorios. El valor del parámetro type debe ser type=FILE or type=DATABASE\"";
     public static final String INVALID_SOURCE_PARAM ="El parámetro 'source' es obligatorio si el valor de 'type' es FILE (el valor de source es el path url del archivo a procesar.";
     public static final String SOURCE_REQUESTPARAM ="source";
     public static final String TYPE_REQUESTPARAM ="type";
