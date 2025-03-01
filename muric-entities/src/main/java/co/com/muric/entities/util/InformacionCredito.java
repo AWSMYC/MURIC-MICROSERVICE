@@ -18,7 +18,7 @@ public class InformacionCredito {
     private Integer calidadDeudor;
     private Integer fechaDesembolso;
     private Integer fechaVencimiento;
-    private Double valorDesembolsado;
+    private Float valorDesembolsado;
     private Integer frecuenciaPagoCapital;
     private Integer frecuenciaPagoIntereses;
     private String tipoTasa;

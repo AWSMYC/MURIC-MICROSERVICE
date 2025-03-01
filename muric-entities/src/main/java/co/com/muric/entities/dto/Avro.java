@@ -1,6 +1,7 @@
 package co.com.muric.entities.dto;
 
 import co.com.muric.entities.model.MuricField;
+import co.com.muric.entities.util.InformacionCredito;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -26,5 +27,4 @@ public class Avro {
     private List<Object> creditoFields;
     private List<Object> movimientoFields;
     private List<Object> demograficoFields;
-
 }

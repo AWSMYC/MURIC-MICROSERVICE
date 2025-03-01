@@ -2,11 +2,9 @@ package co.com.muric.web.rest;
 
 import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.util.StaticVariables;
-import co.com.muric.usecase.implement.MuricServiceImpl;
 import co.com.muric.usecase.interfaces.IMuricService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.embedded.netty.NettyWebServer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

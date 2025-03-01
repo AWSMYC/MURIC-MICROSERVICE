@@ -1,7 +1,7 @@
 package co.com.muric.entities.util;
 
 public class StaticVariables {
-    //MessageFormat.format(,);
+    // LOGS & MESSAGES VARIABLES
     public static final String INVALID_TYPE_PARAM ="El parámetro 'type' es obligatorios (el valor de type es FILE o DATABASE).";
     public static final String INVALID_SOURCE_PARAM ="El parámetro 'source' es obligatorio si el valor de 'type' es FILE (el valor de source es el path url del archivo a procesar.";
     public static final String SOURCE_REQUESTPARAM ="source";
@@ -20,4 +20,13 @@ public class StaticVariables {
     public static final String CROSSORIGINS="*";
     public static final String ALLOWHEADERS="*";
     public static final String INVALID_INPUT_DATA="Bad Request - El valor {0} del parámetro type no es valido. El valor del parámetro type debe ser 'type=FILE' or 'type=DATABASE'";
+    public static final String COMPONENT_SCARN="co.com.muric";
+
+    // FILE VARIABLES
+    public static final String SHEET_CREDIT_INFORMATION_NAME ="Información de los créditos";
+    public static final String SHEET_CREDITS_DEBTS_NAME ="Atributos de los créditos y deu";
+    public static final String SHEET_WALLET_MOVEMENTS_NAME ="Movimientos de cartera";
+
+    //
+
 }

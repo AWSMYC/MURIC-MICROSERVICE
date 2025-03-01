@@ -3,18 +3,15 @@ package co.com.muric.usecase.util;
 import co.com.muric.entities.util.AtributoCreditoDeuda;
 import co.com.muric.entities.util.InformacionCredito;
 import co.com.muric.entities.util.MovimientoCartera;
+import co.com.muric.entities.util.StaticVariables;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.*;
+import java.util.function.Function;
 
 public class FileDataSource {
 
@@ -23,159 +20,21 @@ public class FileDataSource {
     }
 
     public static List<InformacionCredito> readSheetInformacionCredito(String filePath) throws IOException {
-        try (FileInputStream fis = new FileInputStream(new File(filePath));
-             Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            if (!rowIterator.hasNext()) {
-                return Collections.emptyList();
-            }
-            Row headerRow = rowIterator.next();
-            Map<String, Integer> columnIndexMap = new HashMap<>();
-            for (Cell cell : headerRow) {
-                columnIndexMap.put(cell.getStringCellValue().trim().toLowerCase(), cell.getColumnIndex());
-            }
-            List<InformacionCredito> excelDataList = new ArrayList<>();
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                InformacionCredito.InformacionCreditoBuilder dataBuilder = InformacionCredito.builder();
-                columnIndexMap.forEach((key, index) -> {
-                    Cell cell = row.getCell(index);
-                    if (cell != null) {
-                        switch (key.trim()) {
-                            case "identificacion_credito_entidad":
-                                dataBuilder.identificacionCreditoEntidad(getCellValueAsString(cell));
-                                break;
-                            case "tipo_identificacion":
-                                dataBuilder.tipoIdentificacion(getCellValueAsInteger(cell));
-                                break;
-                            case "numero_identificacion":
-                                dataBuilder.numeroIdentificacion(getCellValueAsString(cell));
-                                break;
-                            case "modalidad":
-                                dataBuilder.modalidad(getCellValueAsInteger(cell));
-                                break;
-                            case "codigo_producto":
-                                dataBuilder.codigoProducto(getCellValueAsInteger(cell));
-                                break;
-                            case "calidad_deudor":
-                                dataBuilder.calidadDeudor(getCellValueAsInteger(cell));
-                                break;
-                            case "fecha_desembolso":
-                                dataBuilder.fechaDesembolso(getCellValueAsInteger(cell));
-                                break;
-                            case "fecha_vencimiento":
-                                dataBuilder.fechaVencimiento(getCellValueAsInteger(cell));
-                                break;
-                            case "valor_desembolsado":
-                                dataBuilder.valorDesembolsado(getCellValueAsDouble(cell));
-                                break;
-                            case "frecuencia_pago_capital":
-                                dataBuilder.frecuenciaPagoCapital(getCellValueAsInteger(cell));
-                                break;
-                            case "frecuencia_pago_intereses":
-                                dataBuilder.frecuenciaPagoIntereses(getCellValueAsInteger(cell));
-                                break;
-                            case "tipo_tasa":
-                                dataBuilder.tipoTasa(getCellValueAsString(cell));
-                                break;
-                            case "tipo_garantia":
-                                dataBuilder.tipoGarantia(getCellValueAsInteger(cell));
-                                break;
-                            case "moneda":
-                                dataBuilder.moneda(getCellValueAsString(cell));
-                                break;
-                            case "estado_registro":
-                                dataBuilder.estadoRegistro(getCellValueAsString(cell));
-                                break;
-                        }
-                    }
-                });
-                excelDataList.add(dataBuilder.build());
-            }
-            return excelDataList;
-        }
+        return readSheetData(filePath, StaticVariables.SHEET_CREDIT_INFORMATION_NAME, FileDataSource::buildInformacionCredito);
     }
 
     public static List<AtributoCreditoDeuda> readSheetAtributoCreditoDeuda(String filePath) throws IOException {
-        try (FileInputStream fis = new FileInputStream(new File(filePath));
-             Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            if (!rowIterator.hasNext()) {
-                return Collections.emptyList();
-            }
-            Row headerRow = rowIterator.next();
-            Map<String, Integer> columnIndexMap = new HashMap<>();
-            for (Cell cell : headerRow) {
-                columnIndexMap.put(cell.getStringCellValue().trim().toLowerCase(), cell.getColumnIndex());
-            }
-            List<AtributoCreditoDeuda> excelDataList = new ArrayList<>();
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                AtributoCreditoDeuda.AtributoCreditoDeudaBuilder dataBuilder = AtributoCreditoDeuda.builder();
-                columnIndexMap.forEach((key, index) -> {
-                    Cell cell = row.getCell(index);
-                    if (cell != null) {
-                        switch (key.trim()) {
-                            case "identificacion_credito_entidad":
-                                dataBuilder.identificacionCreditoEntidad(getCellValueAsString(cell));
-                                break;
-                            case "tipo_identificacion":
-                                dataBuilder.tipoIdentificacion(getCellValueAsInteger(cell));
-                                break;
-                            case "numero_identificacion":
-                                dataBuilder.numeroIdentificacion(getCellValueAsString(cell));
-                                break;
-                            case "modalidad":
-                                dataBuilder.modalidad(getCellValueAsInteger(cell));
-                                break;
-                            case "codigo_producto":
-                                dataBuilder.codigoProducto(getCellValueAsInteger(cell));
-                                break;
-                            case "calidad_deudor":
-                                dataBuilder.calidadDeudor(getCellValueAsInteger(cell));
-                                break;
-                            case "fecha_desembolso":
-                                dataBuilder.fechaDesembolso(getCellValueAsInteger(cell));
-                                break;
-                            case "fecha_vencimiento":
-                                dataBuilder.fechaVencimiento(getCellValueAsInteger(cell));
-                                break;
-                            case "valor_desembolsado":
-                                dataBuilder.valorDesembolsado(getCellValueAsDouble(cell));
-                                break;
-                            case "frecuencia_pago_capital":
-                                dataBuilder.frecuenciaPagoCapital(getCellValueAsInteger(cell));
-                                break;
-                            case "frecuencia_pago_intereses":
-                                dataBuilder.frecuenciaPagoIntereses(getCellValueAsInteger(cell));
-                                break;
-                            case "tipo_tasa":
-                                dataBuilder.tipoTasa(getCellValueAsString(cell));
-                                break;
-                            case "tipo_garantia":
-                                dataBuilder.tipoGarantia(getCellValueAsInteger(cell));
-                                break;
-                            case "moneda":
-                                dataBuilder.moneda(getCellValueAsString(cell));
-                                break;
-                            case "estado_registro":
-                                dataBuilder.estadoRegistro(getCellValueAsString(cell));
-                                break;
-                        }
-                    }
-                });
-                excelDataList.add(dataBuilder.build());
-            }
-            return excelDataList;
-        }
+        return readSheetData(filePath, StaticVariables.SHEET_CREDITS_DEBTS_NAME, FileDataSource::buildAtributoCreditoDeuda);
     }
 
     public static List<MovimientoCartera> readSheetMovimientoCartera(String filePath) throws IOException {
+        return readSheetData(filePath, StaticVariables.SHEET_WALLET_MOVEMENTS_NAME, FileDataSource::buildMovimientoCartera);
+    }
+
+    private static <T> List<T> readSheetData(String filePath, String sheetName, Function<Map<String, Cell>, T> rowMapper) throws IOException {
         try (FileInputStream fis = new FileInputStream(new File(filePath));
              Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheet(sheetName);
             Iterator<Row> rowIterator = sheet.iterator();
             if (!rowIterator.hasNext()) {
                 return Collections.emptyList();
@@ -185,101 +44,78 @@ public class FileDataSource {
             for (Cell cell : headerRow) {
                 columnIndexMap.put(cell.getStringCellValue().trim().toLowerCase(), cell.getColumnIndex());
             }
-            List<MovimientoCartera> excelDataList = new ArrayList<>();
+            List<T> dataList = new ArrayList<>();
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                MovimientoCartera.MovimientoCarteraBuilder dataBuilder = MovimientoCartera.builder();
-                columnIndexMap.forEach((key, index) -> {
-                    Cell cell = row.getCell(index);
-                    if (cell != null) {
-                        switch (key.trim()) {
-                            case "identificacion_credito_entidad":
-                                dataBuilder.identificacionCreditoEntidad(getCellValueAsString(cell));
-                                break;
-                            case "tipo_identificacion":
-                                dataBuilder.tipoIdentificacion(getCellValueAsInteger(cell));
-                                break;
-                            case "numero_identificacion":
-                                dataBuilder.numeroIdentificacion(getCellValueAsString(cell));
-                                break;
-                            case "modalidad":
-                                dataBuilder.modalidad(getCellValueAsInteger(cell));
-                                break;
-                            case "codigo_producto":
-                                dataBuilder.codigoProducto(getCellValueAsInteger(cell));
-                                break;
-                            case "calidad_deudor":
-                                dataBuilder.calidadDeudor(getCellValueAsInteger(cell));
-                                break;
-                            case "fecha_desembolso":
-                                dataBuilder.fechaDesembolso(getCellValueAsInteger(cell));
-                                break;
-                            case "fecha_vencimiento":
-                                dataBuilder.fechaVencimiento(getCellValueAsInteger(cell));
-                                break;
-                            case "valor_desembolsado":
-                                dataBuilder.valorDesembolsado(getCellValueAsDouble(cell));
-                                break;
-                            case "frecuencia_pago_capital":
-                                dataBuilder.frecuenciaPagoCapital(getCellValueAsInteger(cell));
-                                break;
-                            case "frecuencia_pago_intereses":
-                                dataBuilder.frecuenciaPagoIntereses(getCellValueAsInteger(cell));
-                                break;
-                            case "tipo_tasa":
-                                dataBuilder.tipoTasa(getCellValueAsString(cell));
-                                break;
-                            case "tipo_garantia":
-                                dataBuilder.tipoGarantia(getCellValueAsInteger(cell));
-                                break;
-                            case "moneda":
-                                dataBuilder.moneda(getCellValueAsString(cell));
-                                break;
-                            case "estado_registro":
-                                dataBuilder.estadoRegistro(getCellValueAsString(cell));
-                                break;
-                        }
-                    }
-                });
-                excelDataList.add(dataBuilder.build());
-            }
-            return excelDataList;
-        }
-    }
-
-    private static String getCellValueAsString(Cell cell) {
-        return switch (cell.getCellType()) {
-            case STRING -> cell.getStringCellValue();
-            case NUMERIC -> String.valueOf(cell.getNumericCellValue());
-            case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
-            default -> "";
-        };
-    }
-
-    private static LocalDate getCellValueAsDate(Cell cell) {
-        if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
-            return cell.getLocalDateTimeCellValue().toLocalDate();
-        }
-        return null;
-    }
-
-    private static Double getCellValueAsDouble(Cell cell) {
-        return (cell.getCellType() == CellType.NUMERIC) ? cell.getNumericCellValue() : null;
-    }
-
-    private static Integer getCellValueAsInteger(Cell cell) {
-        if (cell == null) return null;
-
-        return switch (cell.getCellType()) {
-            case NUMERIC -> (int) cell.getNumericCellValue();
-            case STRING -> {
-                try {
-                    yield Integer.parseInt(cell.getStringCellValue().trim());
-                } catch (NumberFormatException e) {
-                    yield null; // No se puede convertir a Integer
+                Map<String, Cell> cellMap = new HashMap<>();
+                for (Map.Entry<String, Integer> entry : columnIndexMap.entrySet()) {
+                    cellMap.put(entry.getKey(), row.getCell(entry.getValue()));
                 }
+                dataList.add(rowMapper.apply(cellMap));
             }
-            default -> null;
-        };
+            return dataList;
+        }
     }
+
+    private static InformacionCredito buildInformacionCredito(Map<String, Cell> cellMap) {
+        return InformacionCredito.builder()
+                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get("identificacion_credito_entidad")))
+                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get("tipo_identificacion")))
+                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get("numero_identificacion")))
+                .modalidad(FormatFields.getCellValueAsInteger(cellMap.get("modalidad")))
+                .codigoProducto(FormatFields.getCellValueAsInteger(cellMap.get("codigo_producto")))
+                .calidadDeudor(FormatFields.getCellValueAsInteger(cellMap.get("calidad_deudor")))
+                .fechaDesembolso(FormatFields.getCellValueAsInteger(cellMap.get("fecha_desembolso")))
+                .fechaVencimiento(FormatFields.getCellValueAsInteger(cellMap.get("fecha_vencimiento")))
+                .valorDesembolsado(FormatFields.getCellValueAsFloat(cellMap.get("valor_desembolsado")))
+                .frecuenciaPagoCapital(FormatFields.getCellValueAsInteger(cellMap.get("frecuencia_pago_capital")))
+                .frecuenciaPagoIntereses(FormatFields.getCellValueAsInteger(cellMap.get("frecuencia_pago_intereses")))
+                .tipoTasa(FormatFields.getCellValueAsString(cellMap.get("tipo_tasa")))
+                .tipoGarantia(FormatFields.getCellValueAsInteger(cellMap.get("tipo_garantia")))
+                .moneda(FormatFields.getCellValueAsString(cellMap.get("moneda")))
+                .estadoRegistro(FormatFields.getCellValueAsString(cellMap.get("estado_registro")))
+                .build();
+    }
+
+    private static AtributoCreditoDeuda buildAtributoCreditoDeuda(Map<String, Cell> cellMap) {
+        return AtributoCreditoDeuda.builder()
+                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get("identificacion_credito_entidad")))
+                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get("tipo_identificacion")))
+                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get("numero_identificacion")))
+                .claveAtributo(FormatFields.getCellValueAsInteger(cellMap.get("clave_atributo")))
+                .valorAtributo(FormatFields.getCellValueAsString(cellMap.get("valor_atributo")))
+                .build();
+    }
+
+    private static MovimientoCartera buildMovimientoCartera(Map<String, Cell> cellMap) {
+        return MovimientoCartera.builder()
+                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get("identificacion_credito_entidad")))
+                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get("tipo_identificacion")))
+                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get("numero_identificacion")))
+                .fechaCorte(FormatFields.getCellValueAsInteger(cellMap.get("fecha_corte")))
+                .calificacionCredito(FormatFields.getCellValueAsString(cellMap.get("calificacion_credito")))
+                .estado(FormatFields.getCellValueAsInteger(cellMap.get("estado")))
+                .periodoGracia(FormatFields.getCellValueAsInteger(cellMap.get("periodo_gracia")))
+                .diasMora(FormatFields.getCellValueAsInteger(cellMap.get("dias_mora")))
+                .tasaInteres(FormatFields.getCellValueAsFloat(cellMap.get("tasa_interes")))
+                .spreadTasaInteres(FormatFields.getCellValueAsFloat(cellMap.get("spread_tasa_interes")))
+                .saldoCapital(FormatFields.getCellValueAsFloat(cellMap.get("saldo_capital")))
+                .saldoIntereses(FormatFields.getCellValueAsFloat(cellMap.get("saldo_intereses")))
+                .saldoOtros(FormatFields.getCellValueAsFloat(cellMap.get("saldo_otros")))
+                .modeloProvisiones(FormatFields.getCellValueAsInteger(cellMap.get("modelo_provisiones")))
+                .provisionProciclica(FormatFields.getCellValueAsFloat(cellMap.get("provision_prociclica")))
+                .provisionContraciclica(FormatFields.getCellValueAsFloat(cellMap.get("provision_contraciclica")))
+                .provisionAdicionalPoliticaEntidad(FormatFields.getCellValueAsFloat(cellMap.get("provision_adicional_politica_entidad")))
+                .provisionOtros(FormatFields.getCellValueAsFloat(cellMap.get("provision_otros")))
+                .cuotaEsperadaCapital(FormatFields.getCellValueAsFloat(cellMap.get("cuota_esperada_capital")))
+                .cuotaEsperadaIntereses(FormatFields.getCellValueAsFloat(cellMap.get("cuota_esperada_intereses")))
+                .cuotaRecibidaCapital(FormatFields.getCellValueAsFloat(cellMap.get("cuota_recibida_capital")))
+                .cuotaRecibidaIntereses(FormatFields.getCellValueAsFloat(cellMap.get("cuota_recibida_intereses")))
+                .valorGarantia(FormatFields.getCellValueAsFloat(cellMap.get("valor_garantia")))
+                .fechaGarantia(FormatFields.getCellValueAsInteger(cellMap.get("fecha_garantia")))
+                .probabilidadIncumplimientoCredito(FormatFields.getCellValueAsFloat(cellMap.get("probabilidad_incumplimiento_credito")))
+                .perdidaDadoIncumplimiento(FormatFields.getCellValueAsFloat(cellMap.get("perdida_dado_incumplimiento")))
+                .build();
+    }
+    
 }

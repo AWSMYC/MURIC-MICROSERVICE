@@ -29,7 +29,11 @@ public class MuricServiceImpl implements IMuricService {
                 case StaticVariables.SOURCE_FILE:
                     avroData = ProcessFile.generateAvroFromFiles(source);
                     if (null!=avroData) {
-                        break;
+                        return MuricResponseDTO.builder()
+                                .resposeCode(HttpStatus.BAD_REQUEST.value())
+                                .responseType(HttpStatus.BAD_REQUEST.toString())
+                                .resposeMessage(MessageFormat.format(StaticVariables.INVALID_INPUT_DATA,type))
+                                .build();
                     }
                     logger.error(StaticVariables.PROCESS_FILE_ERROR);
                     break;

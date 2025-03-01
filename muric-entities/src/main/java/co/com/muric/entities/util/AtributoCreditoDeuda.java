@@ -13,16 +13,6 @@ public class AtributoCreditoDeuda {
     private String identificacionCreditoEntidad;
     private Integer tipoIdentificacion;
     private String numeroIdentificacion;
-    private Integer modalidad;
-    private Integer codigoProducto;
-    private Integer calidadDeudor;
-    private Integer fechaDesembolso;
-    private Integer fechaVencimiento;
-    private Double valorDesembolsado;
-    private Integer frecuenciaPagoCapital;
-    private Integer frecuenciaPagoIntereses;
-    private String tipoTasa;
-    private Integer tipoGarantia;
-    private String moneda;
-    private String estadoRegistro;
+    private Integer claveAtributo;
+    private String valorAtributo;
 }
