@@ -2,16 +2,21 @@ package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.Avro;
 import co.com.muric.entities.dto.MuricResponseDTO;
+import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
+import co.com.muric.entities.model.excel.InformacionCredito;
+import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.interfaces.IMuricService;
 import co.com.muric.usecase.util.FileDataSource;
+import co.com.muric.usecase.util.ResponseFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Service
 public class MuricServiceImpl implements IMuricService {
@@ -24,60 +29,34 @@ public class MuricServiceImpl implements IMuricService {
     @Override
     public MuricResponseDTO generateAvro(String source, String type) {
         try {
-            Avro avroData;
+            Avro avroData = null;
+
             switch (type.toUpperCase()) {
                 case StaticVariables.TYPE_FILE:
-                    FileDataSource.readSheetInformacionCredito(source);
-                    FileDataSource.readSheetAtributoCreditoDeuda(source);
-                    FileDataSource.readSheetMovimientoCartera(source);
-                    avroData = ProcessFile.avroMapper(FileDataSource.readSheetInformacionCredito(source),
-                            FileDataSource.readSheetAtributoCreditoDeuda(source),
-                            FileDataSource.readSheetMovimientoCartera(source));
-                    if (null!=avroData) {
-                        return MuricResponseDTO.builder()
-                                .resposeCode(HttpStatus.OK.value())
-                                .responseType(HttpStatus.OK.toString())
-                                .resposeMessage(StaticVariables.PROCESS_FILE_OK)
-                                .build();
-                    } else {
-                        logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, source));
-                        return MuricResponseDTO.builder()
-                                .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                                .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                                .resposeMessage(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, source))
-                                .build();
-                    }
+                    avroData = processFile(source);
+                    break;
                 case StaticVariables.TYPE_DATABASE:
                     avroData = ProcessFile.generateAvroFromDataBase();
-                    if (null!=avroData) {
-                        return MuricResponseDTO.builder()
-                                .resposeCode(HttpStatus.OK.value())
-                                .responseType(HttpStatus.OK.toString())
-                                .resposeMessage(StaticVariables.PROCESS_DATABASE_OK)
-                                .build();
-                    } else {
-                        logger.error(StaticVariables.PROCESS_DATABASE_ERROR);
-                        return MuricResponseDTO.builder()
-                                .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                                .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                                .resposeMessage(StaticVariables.PROCESS_DATABASE_ERROR)
-                                .build();
-                    }
+                    break;
+                default:
+                    return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_GENERIC_ERROR, source);
+            }
+            if (avroData != null) {
+                return ResponseFormat.createSuccessResponse(type.equals(StaticVariables.TYPE_FILE) ? StaticVariables.PROCESS_FILE_OK : StaticVariables.PROCESS_DATABASE_OK);
+            } else {
+                return ResponseFormat.createErrorResponse(type.equals(StaticVariables.TYPE_FILE) ? StaticVariables.PROCESS_FILE_ERROR : StaticVariables.PROCESS_DATABASE_ERROR, source);
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR,e));
-            return MuricResponseDTO.builder()
-                    .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                    .resposeMessage(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR,e))
-                    .build();
+            logger.error(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR, e));
+            return ResponseFormat.createErrorResponse(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR, e), null);
         }
-        return MuricResponseDTO.builder().build();
     }
 
-    private MuricResponseDTO sendAvro(){
-        superintendenciaAPI.sendAvro(Avro.builder().build());
-        return MuricResponseDTO.builder().build();
+    private Avro processFile(String source) throws IOException {
+        List<InformacionCredito> InformacionCreditoList = FileDataSource.readSheetInformacionCredito(source);
+        List<AtributoCreditoDeuda> atributoCreditoDeudaList = FileDataSource.readSheetAtributoCreditoDeuda(source);
+        List<MovimientoCartera> movimientoCarteraList = FileDataSource.readSheetMovimientoCartera(source);
+        return ProcessFile.avroMapper(InformacionCreditoList, atributoCreditoDeudaList, movimientoCarteraList);
     }
 
 }

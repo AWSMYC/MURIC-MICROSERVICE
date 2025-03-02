@@ -2,8 +2,6 @@ package co.com.muric.usecase.util;
 
 import org.apache.poi.ss.usermodel.*;
 
-import java.util.Map;
-
 public class FormatFields {
 
     public static String getCellValueAsString(Cell cell) {
