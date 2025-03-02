@@ -40,7 +40,6 @@ public class MuricServiceImpl implements IMuricService {
                                 .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
                                 .resposeMessage(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, source))
                                 .build();
-
                     }
                 case StaticVariables.TYPE_DATABASE:
                     avroData = ProcessFile.generateAvroFromDataBase();
@@ -57,7 +56,6 @@ public class MuricServiceImpl implements IMuricService {
                                 .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
                                 .resposeMessage(StaticVariables.PROCESS_DATABASE_ERROR)
                                 .build();
-
                     }
             }
         } catch (Exception e) {

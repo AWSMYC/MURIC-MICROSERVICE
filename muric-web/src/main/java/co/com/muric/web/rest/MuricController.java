@@ -81,4 +81,5 @@ public class MuricController {
     public ResponseEntity getHealth() {
         return ResponseEntity.ok(200);
     }
+
 }

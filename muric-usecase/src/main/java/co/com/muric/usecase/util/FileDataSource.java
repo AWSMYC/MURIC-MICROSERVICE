@@ -20,15 +20,18 @@ public class FileDataSource {
     }
 
     public static List<InformacionCredito> readSheetInformacionCredito(String filePath) throws IOException {
-        return readSheetData(filePath, StaticVariables.SHEET_CREDIT_INFORMATION_NAME, FileDataSource::buildInformacionCredito);
+        List<InformacionCredito> rsd = readSheetData(filePath, StaticVariables.SHEET_CREDIT_INFORMATION_NAME, FileDataSource::buildInformacionCredito);
+        return rsd;
     }
 
     public static List<AtributoCreditoDeuda> readSheetAtributoCreditoDeuda(String filePath) throws IOException {
-        return readSheetData(filePath, StaticVariables.SHEET_CREDITS_DEBTS_NAME, FileDataSource::buildAtributoCreditoDeuda);
+        List<AtributoCreditoDeuda> rsd = readSheetData(filePath, StaticVariables.SHEET_CREDITS_DEBTS_NAME, FileDataSource::buildAtributoCreditoDeuda);
+        return rsd;
     }
 
     public static List<MovimientoCartera> readSheetMovimientoCartera(String filePath) throws IOException {
-        return readSheetData(filePath, StaticVariables.SHEET_WALLET_MOVEMENTS_NAME, FileDataSource::buildMovimientoCartera);
+        List<MovimientoCartera> rsd = readSheetData(filePath, StaticVariables.SHEET_WALLET_MOVEMENTS_NAME, FileDataSource::buildMovimientoCartera);
+        return rsd;
     }
 
     private static <T> List<T> readSheetData(String filePath, String sheetName, Function<Map<String, Cell>, T> rowMapper) throws IOException {
@@ -49,7 +52,9 @@ public class FileDataSource {
                 Row row = rowIterator.next();
                 Map<String, Cell> cellMap = new HashMap<>();
                 for (Map.Entry<String, Integer> entry : columnIndexMap.entrySet()) {
-                    cellMap.put(entry.getKey(), row.getCell(entry.getValue()));
+                    String columnKey = entry.getKey();
+                    int columnIndex = entry.getValue();
+                    cellMap.put(columnKey, row.getCell(columnIndex));
                 }
                 dataList.add(rowMapper.apply(cellMap));
             }
@@ -59,62 +64,62 @@ public class FileDataSource {
 
     private static InformacionCredito buildInformacionCredito(Map<String, Cell> cellMap) {
         return InformacionCredito.builder()
-                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get("identificacion_credito_entidad")))
-                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get("tipo_identificacion")))
-                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get("numero_identificacion")))
-                .modalidad(FormatFields.getCellValueAsInteger(cellMap.get("modalidad")))
-                .codigoProducto(FormatFields.getCellValueAsInteger(cellMap.get("codigo_producto")))
-                .calidadDeudor(FormatFields.getCellValueAsInteger(cellMap.get("calidad_deudor")))
-                .fechaDesembolso(FormatFields.getCellValueAsInteger(cellMap.get("fecha_desembolso")))
-                .fechaVencimiento(FormatFields.getCellValueAsInteger(cellMap.get("fecha_vencimiento")))
-                .valorDesembolsado(FormatFields.getCellValueAsFloat(cellMap.get("valor_desembolsado")))
-                .frecuenciaPagoCapital(FormatFields.getCellValueAsInteger(cellMap.get("frecuencia_pago_capital")))
-                .frecuenciaPagoIntereses(FormatFields.getCellValueAsInteger(cellMap.get("frecuencia_pago_intereses")))
-                .tipoTasa(FormatFields.getCellValueAsString(cellMap.get("tipo_tasa")))
-                .tipoGarantia(FormatFields.getCellValueAsInteger(cellMap.get("tipo_garantia")))
-                .moneda(FormatFields.getCellValueAsString(cellMap.get("moneda")))
-                .estadoRegistro(FormatFields.getCellValueAsString(cellMap.get("estado_registro")))
+                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD)))
+                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.TIPO_IDENTIFICACION)))
+                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.NUMERO_IDENTIFICACION)))
+                .modalidad(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.MODALIDAD)))
+                .codigoProducto(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.CODIGO_PRODUCTO)))
+                .calidadDeudor(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.CALIDAD_DEUDOR)))
+                .fechaDesembolso(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.FECHA_DESEMBOLSO)))
+                .fechaVencimiento(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.FECHA_VENCIMIENTO)))
+                .valorDesembolsado(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.VALOR_DESEMBOLSADO)))
+                .frecuenciaPagoCapital(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.FRECUENCIA_PAGO_CAPITAL)))
+                .frecuenciaPagoIntereses(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.FRECUENCIA_PAGO_INTERESES)))
+                .tipoTasa(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.TIPO_TASA)))
+                .tipoGarantia(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.TIPO_GARANTIA)))
+                .moneda(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.MONEDA)))
+                .estadoRegistro(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.ESTADO_REGISTRO)))
                 .build();
     }
 
     private static AtributoCreditoDeuda buildAtributoCreditoDeuda(Map<String, Cell> cellMap) {
         return AtributoCreditoDeuda.builder()
-                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get("identificacion_credito_entidad")))
-                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get("tipo_identificacion")))
-                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get("numero_identificacion")))
-                .claveAtributo(FormatFields.getCellValueAsInteger(cellMap.get("clave_atributo")))
-                .valorAtributo(FormatFields.getCellValueAsString(cellMap.get("valor_atributo")))
+                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD)))
+                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.TIPO_IDENTIFICACION)))
+                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.NUMERO_IDENTIFICACION)))
+                .claveAtributo(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.CLAVE_ATRIBUTO)))
+                .valorAtributo(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.VALOR_ATRIBUTO)))
                 .build();
     }
 
     private static MovimientoCartera buildMovimientoCartera(Map<String, Cell> cellMap) {
         return MovimientoCartera.builder()
-                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get("identificacion_credito_entidad")))
-                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get("tipo_identificacion")))
-                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get("numero_identificacion")))
-                .fechaCorte(FormatFields.getCellValueAsInteger(cellMap.get("fecha_corte")))
-                .calificacionCredito(FormatFields.getCellValueAsString(cellMap.get("calificacion_credito")))
-                .estado(FormatFields.getCellValueAsInteger(cellMap.get("estado")))
-                .periodoGracia(FormatFields.getCellValueAsInteger(cellMap.get("periodo_gracia")))
-                .diasMora(FormatFields.getCellValueAsInteger(cellMap.get("dias_mora")))
-                .tasaInteres(FormatFields.getCellValueAsFloat(cellMap.get("tasa_interes")))
-                .spreadTasaInteres(FormatFields.getCellValueAsFloat(cellMap.get("spread_tasa_interes")))
-                .saldoCapital(FormatFields.getCellValueAsFloat(cellMap.get("saldo_capital")))
-                .saldoIntereses(FormatFields.getCellValueAsFloat(cellMap.get("saldo_intereses")))
-                .saldoOtros(FormatFields.getCellValueAsFloat(cellMap.get("saldo_otros")))
-                .modeloProvisiones(FormatFields.getCellValueAsInteger(cellMap.get("modelo_provisiones")))
-                .provisionProciclica(FormatFields.getCellValueAsFloat(cellMap.get("provision_prociclica")))
-                .provisionContraciclica(FormatFields.getCellValueAsFloat(cellMap.get("provision_contraciclica")))
-                .provisionAdicionalPoliticaEntidad(FormatFields.getCellValueAsFloat(cellMap.get("provision_adicional_politica_entidad")))
-                .provisionOtros(FormatFields.getCellValueAsFloat(cellMap.get("provision_otros")))
-                .cuotaEsperadaCapital(FormatFields.getCellValueAsFloat(cellMap.get("cuota_esperada_capital")))
-                .cuotaEsperadaIntereses(FormatFields.getCellValueAsFloat(cellMap.get("cuota_esperada_intereses")))
-                .cuotaRecibidaCapital(FormatFields.getCellValueAsFloat(cellMap.get("cuota_recibida_capital")))
-                .cuotaRecibidaIntereses(FormatFields.getCellValueAsFloat(cellMap.get("cuota_recibida_intereses")))
-                .valorGarantia(FormatFields.getCellValueAsFloat(cellMap.get("valor_garantia")))
-                .fechaGarantia(FormatFields.getCellValueAsInteger(cellMap.get("fecha_garantia")))
-                .probabilidadIncumplimientoCredito(FormatFields.getCellValueAsFloat(cellMap.get("probabilidad_incumplimiento_credito")))
-                .perdidaDadoIncumplimiento(FormatFields.getCellValueAsFloat(cellMap.get("perdida_dado_incumplimiento")))
+                .identificacionCreditoEntidad(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD)))
+                .tipoIdentificacion(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.TIPO_IDENTIFICACION)))
+                .numeroIdentificacion(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.NUMERO_IDENTIFICACION)))
+                .fechaCorte(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.FECHA_CORTE)))
+                .calificacionCredito(FormatFields.getCellValueAsString(cellMap.get(StaticVariables.CALIFICACION_CREDITO)))
+                .estado(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.ESTADO)))
+                .periodoGracia(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.PERIODO_GRACIA)))
+                .diasMora(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.DIAS_MORA)))
+                .tasaInteres(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.TASA_INTERES)))
+                .spreadTasaInteres(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.SPREAD_TASA_INTERES)))
+                .saldoCapital(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.SALDO_CAPITAL)))
+                .saldoIntereses(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.SALDO_INTERESES)))
+                .saldoOtros(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.SALDO_OTROS)))
+                .modeloProvisiones(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.MODELO_PROVISIONES)))
+                .provisionProciclica(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_PROCICLICA)))
+                .provisionContraciclica(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_CONTRACICLICA)))
+                .provisionAdicionalPoliticaEntidad(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_ADICIONAL_POLITICA_ENTIDAD)))
+                .provisionOtros(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_OTROS)))
+                .cuotaEsperadaCapital(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.CUOTA_ESPERADA_CAPITAL)))
+                .cuotaEsperadaIntereses(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.CUOTA_ESPERADA_INTERESES)))
+                .cuotaRecibidaCapital(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.CUOTA_RECIBIDA_CAPITAL)))
+                .cuotaRecibidaIntereses(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.CUOTA_RECIBIDA_INTERESES)))
+                .valorGarantia(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.VALOR_GARANTIA)))
+                .fechaGarantia(FormatFields.getCellValueAsInteger(cellMap.get(StaticVariables.FECHA_GARANTIA)))
+                .probabilidadIncumplimientoCredito(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROBABILIDAD_INCUMPLIMIENTO_CREDITO)))
+                .perdidaDadoIncumplimiento(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROBABILIDAD_INCUMPLIMIENTO_CREDITO)))
                 .build();
     }
     
