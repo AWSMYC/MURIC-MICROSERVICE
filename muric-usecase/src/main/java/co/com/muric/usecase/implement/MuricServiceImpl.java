@@ -80,5 +80,4 @@ public class MuricServiceImpl implements IMuricService {
         return MuricResponseDTO.builder().build();
     }
 
-
 }
