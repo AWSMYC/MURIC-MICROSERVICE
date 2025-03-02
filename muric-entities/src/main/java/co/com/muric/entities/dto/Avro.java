@@ -3,7 +3,6 @@ package co.com.muric.entities.dto;
 import co.com.muric.entities.model.database.MuricField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-
 import java.util.List;
 
 @Getter

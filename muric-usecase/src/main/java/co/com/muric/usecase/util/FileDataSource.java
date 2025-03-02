@@ -20,18 +20,15 @@ public class FileDataSource {
     }
 
     public static List<InformacionCredito> readSheetInformacionCredito(String filePath) throws IOException {
-        List<InformacionCredito> rsd = readSheetData(filePath, StaticVariables.SHEET_CREDIT_INFORMATION_NAME, FileDataSource::buildInformacionCredito);
-        return rsd;
+        return readSheetData(filePath, StaticVariables.SHEET_CREDIT_INFORMATION_NAME, FileDataSource::buildInformacionCredito);
     }
 
     public static List<AtributoCreditoDeuda> readSheetAtributoCreditoDeuda(String filePath) throws IOException {
-        List<AtributoCreditoDeuda> rsd = readSheetData(filePath, StaticVariables.SHEET_CREDITS_DEBTS_NAME, FileDataSource::buildAtributoCreditoDeuda);
-        return rsd;
+        return readSheetData(filePath, StaticVariables.SHEET_CREDITS_DEBTS_NAME, FileDataSource::buildAtributoCreditoDeuda);
     }
 
     public static List<MovimientoCartera> readSheetMovimientoCartera(String filePath) throws IOException {
-        List<MovimientoCartera> rsd = readSheetData(filePath, StaticVariables.SHEET_WALLET_MOVEMENTS_NAME, FileDataSource::buildMovimientoCartera);
-        return rsd;
+        return readSheetData(filePath, StaticVariables.SHEET_WALLET_MOVEMENTS_NAME, FileDataSource::buildMovimientoCartera);
     }
 
     private static <T> List<T> readSheetData(String filePath, String sheetName, Function<Map<String, Cell>, T> rowMapper) throws IOException {

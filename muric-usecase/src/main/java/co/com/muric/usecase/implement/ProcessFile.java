@@ -2,7 +2,9 @@ package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.Avro;
 import co.com.muric.entities.model.database.MuricField;
+import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
 import co.com.muric.entities.model.excel.InformacionCredito;
+import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.usecase.util.FileDataSource;
 import org.apache.logging.log4j.LogManager;
@@ -18,25 +20,15 @@ public class ProcessFile {
 
     private static final Logger logger = LogManager.getLogger(ProcessFile.class);
 
-    public static Avro generateAvroFromFiles(String source) throws IOException {
-        try {
-            FileDataSource.readSheetInformacionCredito(source);
-            FileDataSource.readSheetAtributoCreditoDeuda(source);
-            FileDataSource.readSheetMovimientoCartera(source);
-        } catch (IOException io) {
-            logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR,io));
-        }
-        return Avro.builder()
-                .build();
-    }
-
     public static Avro generateAvroFromDataBase() {
         //muricRepository.findData();
         //superintendenciaAPI.sendAvro(Avro.builder().build());
         return Avro.builder().build();
     }
 
-    private static Avro avroMapper(List<InformacionCredito> fileDataList) {
+    public static Avro avroMapper(List<InformacionCredito> informacionCreditoList,
+                                   List<AtributoCreditoDeuda> atributoCreditoDeudaList,
+                                   List<MovimientoCartera> movimientoCarteraList) {
         List<Object> creditoFields = new ArrayList<>();
         List<Object> movimientoFields = new ArrayList<>();
         List<Object> demograficoFields = new ArrayList<>();
