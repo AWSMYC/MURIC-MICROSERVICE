@@ -3,6 +3,7 @@ package co.com.muric.web.rest;
 import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.usecase.interfaces.IMuricService;
+import co.com.muric.web.util.ValidateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,66 +20,30 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class MuricController {
 
     @Autowired
-    private IMuricService muricService;
+    private final IMuricService muricService;
 
     @GetMapping(value = StaticVariables.GENERATE_AVRO_REST_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> generateAvro(@RequestParam(name = StaticVariables.SOURCE_REQUESTPARAM, required = false) String source,
                                           @RequestParam(name = StaticVariables.TYPE_REQUESTPARAM, required = false) String type) {
         try {
-            if (type.isBlank()) {
-               return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
-                       .resposeCode(HttpStatus.BAD_REQUEST.value())
-                       .responseType(HttpStatus.BAD_REQUEST.toString())
-                       .resposeMessage(StaticVariables.INVALID_TYPE_PARAM)
-                       .build());
-            } else if (!type.equalsIgnoreCase(StaticVariables.TYPE_FILE) && !type.equalsIgnoreCase(StaticVariables.TYPE_DATABASE)) {
-                return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
-                        .resposeCode(HttpStatus.BAD_REQUEST.value())
-                        .responseType(HttpStatus.BAD_REQUEST.toString())
-                        .resposeMessage(MessageFormat.format(StaticVariables.INVALID_TYPE_INPUT_DATA, type))
-                        .build());
-            }else if (type.equalsIgnoreCase(StaticVariables.TYPE_FILE) && source.isBlank()){
-               return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
-                       .resposeCode(HttpStatus.BAD_REQUEST.value())
-                       .responseType(HttpStatus.BAD_REQUEST.toString())
-                       .resposeMessage(StaticVariables.INVALID_SOURCE_PARAM)
-                       .build());
-            } else {
-                return ResponseEntity.ok(muricService.generateAvro(source, type));
+            if (ValidateRequest.isInvalidType(type)) {
+                return ValidateRequest.buildErrorResponse(HttpStatus.BAD_REQUEST, StaticVariables.INVALID_TYPE_PARAM);
             }
+            if (ValidateRequest.isInvalidTypeInputData(type)) {
+                return ValidateRequest.buildErrorResponse(HttpStatus.BAD_REQUEST,
+                        MessageFormat.format(StaticVariables.INVALID_TYPE_INPUT_DATA, type));
+            }
+            if (ValidateRequest.isFileTypeAndSourceBlank(type, source)) {
+                return ValidateRequest.buildErrorResponse(HttpStatus.BAD_REQUEST, StaticVariables.INVALID_SOURCE_PARAM);
+            }
+            return ResponseEntity.ok(muricService.generateAvro(source, type));
         } catch (Exception e) {
-            if (null==type && null==source){
-                return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
-                        .resposeCode(HttpStatus.BAD_REQUEST.value())
-                        .responseType(HttpStatus.BAD_REQUEST.toString())
-                        .resposeMessage(StaticVariables.INVALID_SOURCE_TYPE_PARAM)
-                        .build());
-            }
-            if (e.getMessage().equalsIgnoreCase(StaticVariables.SOURCE_BLANK)) {
-                return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
-                        .resposeCode(HttpStatus.BAD_REQUEST.value())
-                        .responseType(HttpStatus.BAD_REQUEST.toString())
-                        .resposeMessage(StaticVariables.INVALID_SOURCE_PARAM)
-                        .build());
-            }
-            if (e.getMessage().equalsIgnoreCase(StaticVariables.TYPE_BLANK)) {
-                return ResponseEntity.badRequest().body(MuricResponseDTO.builder()
-                        .resposeCode(HttpStatus.BAD_REQUEST.value())
-                        .responseType(HttpStatus.BAD_REQUEST.toString())
-                        .resposeMessage(StaticVariables.INVALID_TYPE_PARAM)
-                        .build());
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(MuricResponseDTO.builder()
-                            .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                            .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                            .resposeMessage(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR,e))
-                            .build());
+            return ValidateRequest.handleException(e, type, source);
         }
     }
 
     @GetMapping(value = StaticVariables.HEALHT_CHECK_AVRO_REST_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getHealth() {
+    public ResponseEntity<?> getHealth() {
         return ResponseEntity.ok(200);
     }
 
