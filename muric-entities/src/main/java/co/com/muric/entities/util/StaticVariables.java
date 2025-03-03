@@ -75,3 +75,4 @@ public class StaticVariables {
     public static final String PROBABILIDAD_INCUMPLIMIENTO_CREDITO ="probabilidad_incumplimiento_credito";
 
 }
+
