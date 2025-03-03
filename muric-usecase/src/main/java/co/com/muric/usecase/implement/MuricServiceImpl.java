@@ -63,7 +63,6 @@ public class MuricServiceImpl implements IMuricService {
             CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
             CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
             CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
-
             CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
             List<UnifiedCreditInformation> unifiedCreditInformation = ProcessFile.agruparCreditos(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
             return unifiedCreditInformation;
@@ -73,7 +72,7 @@ public class MuricServiceImpl implements IMuricService {
         }
     }
 
-    private <T> CompletableFuture<T> fetchAsync(DataSupplier<T> supplier, ExecutorService executor) {
+    public static <T> CompletableFuture<T> fetchAsync(DataSupplier<T> supplier, ExecutorService executor) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return supplier.get();
@@ -87,4 +86,5 @@ public class MuricServiceImpl implements IMuricService {
     private interface DataSupplier<T> {
         T get() throws IOException;
     }
+
 }
