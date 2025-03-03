@@ -1,20 +1,18 @@
 package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.Avro;
-import co.com.muric.entities.model.database.MuricField;
-import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
-import co.com.muric.entities.model.excel.InformacionCredito;
-import co.com.muric.entities.model.excel.MovimientoCartera;
-import co.com.muric.entities.model.excel.UnifiedCreditInformation;
+import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.interfaces.IMuricService;
-import java.util.ArrayList;
-import java.util.List;
+import co.com.muric.usecase.util.ResponseFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
 
 @Service
 public class MuricServiceImpl implements IMuricService {
@@ -30,25 +28,34 @@ public class MuricServiceImpl implements IMuricService {
     }
 
     @Override
-    public Object generateAvro(String source, String type) {
+    public MuricResponseDTO generateAvro(String source, String type) {
         try {
             if (StaticVariables.TYPE_FILE.equalsIgnoreCase(type)) {
-                return ProcessData.generateUnifiedCreditInformation(source);
+                ProcessData.generateUnifiedCreditInformation(source);
+                return MuricResponseDTO.builder()
+                        .resposeCode(HttpStatus.OK.value())
+                        .responseType(HttpStatus.OK.toString())
+                        .resposeMessage(StaticVariables.PROCESS_FILE_OK)
+                        .build();
             } else if (StaticVariables.TYPE_DATABASE.equalsIgnoreCase(type)) {
                 Avro avroData = generateAvroFromDataBase();
                 if (avroData != null) {
-                    // return ResponseFormat.createSuccessResponse(StaticVariables.PROCESS_DATABASE_OK);
+                    return ResponseFormat.createSuccessResponse(StaticVariables.PROCESS_DATABASE_OK);
                 } else {
-                    // return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_DATABASE_ERROR, source);
+                    logger.error(StaticVariables.PROCESS_DATABASE_ERROR);
+                    return MuricResponseDTO.builder()
+                            .resposeCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                            .responseType(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                            .resposeMessage(StaticVariables.PROCESS_DATABASE_ERROR)
+                            .build();
                 }
             } else {
-                // return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_GENERIC_ERROR, source);
+                return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_GENERIC_ERROR, source);
             }
         } catch (Exception e) {
-            logger.error("Error en generateAvro: {}", e.getMessage(), e);
-            // return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_GENERIC_ERROR, null);
+            logger.error( MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR, type));
+            return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_GENERIC_ERROR, null);
         }
-        return null;
     }
 
     public static Avro generateAvroFromDataBase() {

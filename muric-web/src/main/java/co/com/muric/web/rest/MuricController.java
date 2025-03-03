@@ -1,6 +1,5 @@
 package co.com.muric.web.rest;
 
-import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.usecase.interfaces.IMuricService;
 import co.com.muric.web.util.ValidateRequest;
