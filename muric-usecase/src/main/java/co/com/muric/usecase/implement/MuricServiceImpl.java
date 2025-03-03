@@ -30,7 +30,7 @@ public class MuricServiceImpl implements IMuricService {
     }
 
     @Override
-    public List<UnifiedCreditInformation> generateAvro(String source, String type) {
+    public Object generateAvro(String source, String type) {
         try {
             if (StaticVariables.TYPE_FILE.equalsIgnoreCase(type)) {
                 return ProcessData.generateUnifiedCreditInformation(source);
@@ -55,34 +55,6 @@ public class MuricServiceImpl implements IMuricService {
         //muricRepository.findData();
         //superintendenciaAPI.sendAvro(Avro.builder().build());
         return Avro.builder().build();
-    }
-
-    public static Avro avroMapper(List<InformacionCredito> informacionCreditoList,
-                                  List<AtributoCreditoDeuda> atributoCreditoDeudaList,
-                                  List<MovimientoCartera> movimientoCarteraList) {
-        List<Object> creditoFields = new ArrayList<>();
-        List<Object> movimientoFields = new ArrayList<>();
-        List<Object> demograficoFields = new ArrayList<>();
-        return Avro.builder()
-                .type(null)
-                .name(null)
-                .tipoEntidad(null)
-                .codigoEntidad(null)
-                .fechaCorte(MuricField.MuricFieldNameTypeSubType.builder()
-                        .name(null)
-                        .type(MuricField.MuricFieldNameTypeSubType.MuricFieldLogicalType.builder().build())
-                        .build())
-                .fechaGeneracion(MuricField.MuricFieldNameTypeSubType.builder()
-                        .name(null)
-                        .type(MuricField.MuricFieldNameTypeSubType.MuricFieldLogicalType.builder().build())
-                        .build())
-                .comentarios(null)
-                .firma(null)
-                .palabraClave(null)
-                .creditoFields(creditoFields)
-                .movimientoFields(movimientoFields)
-                .demograficoFields(demograficoFields)
-                .build();
     }
 
 }

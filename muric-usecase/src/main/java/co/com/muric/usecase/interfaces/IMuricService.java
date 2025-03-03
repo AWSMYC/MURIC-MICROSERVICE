@@ -6,5 +6,5 @@ import co.com.muric.entities.model.excel.UnifiedCreditInformation;
 import java.util.List;
 
 public interface IMuricService {
-    List<UnifiedCreditInformation> generateAvro (String source, String type);
+    Object generateAvro (String source, String type);
 }
