@@ -1,6 +1,7 @@
 package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.Avro;
+import co.com.muric.entities.model.database.MuricField;
 import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
 import co.com.muric.entities.model.excel.InformacionCredito;
 import co.com.muric.entities.model.excel.MovimientoCartera;
@@ -9,15 +10,8 @@ import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.interfaces.IMuricService;
-import co.com.muric.usecase.util.FileDataSource;
-
-import java.io.IOException;
-import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -39,9 +33,9 @@ public class MuricServiceImpl implements IMuricService {
     public List<UnifiedCreditInformation> generateAvro(String source, String type) {
         try {
             if (StaticVariables.TYPE_FILE.equalsIgnoreCase(type)) {
-                return processFile(source);
+                return ProcessFile.processData(source);
             } else if (StaticVariables.TYPE_DATABASE.equalsIgnoreCase(type)) {
-                Avro avroData = ProcessFile.generateAvroFromDataBase();
+                Avro avroData = generateAvroFromDataBase();
                 if (avroData != null) {
                     // return ResponseFormat.createSuccessResponse(StaticVariables.PROCESS_DATABASE_OK);
                 } else {
@@ -57,34 +51,38 @@ public class MuricServiceImpl implements IMuricService {
         return null;
     }
 
-    private List<UnifiedCreditInformation> processFile(String source) throws IOException {
-        ExecutorService executor = Executors.newFixedThreadPool(3);
-        try  {
-            CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
-            CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
-            CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
-            CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
-            List<UnifiedCreditInformation> unifiedCreditInformation = ProcessFile.agruparCreditos(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
-            return unifiedCreditInformation;
-        } catch (Exception e) {
-            logger.error("Error al procesar el archivo: {}", e.getMessage(), e);
-            throw new IOException("Error al procesar el archivo", e);
-        }
+    public static Avro generateAvroFromDataBase() {
+        //muricRepository.findData();
+        //superintendenciaAPI.sendAvro(Avro.builder().build());
+        return Avro.builder().build();
     }
 
-    public static <T> CompletableFuture<T> fetchAsync(DataSupplier<T> supplier, ExecutorService executor) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return supplier.get();
-            } catch (IOException e) {
-                throw new RuntimeException("Error al leer el archivo", e);
-            }
-        }, executor);
-    }
-
-    @FunctionalInterface
-    private interface DataSupplier<T> {
-        T get() throws IOException;
+    public static Avro avroMapper(List<InformacionCredito> informacionCreditoList,
+                                  List<AtributoCreditoDeuda> atributoCreditoDeudaList,
+                                  List<MovimientoCartera> movimientoCarteraList) {
+        List<Object> creditoFields = new ArrayList<>();
+        List<Object> movimientoFields = new ArrayList<>();
+        List<Object> demograficoFields = new ArrayList<>();
+        return Avro.builder()
+                .type(null)
+                .name(null)
+                .tipoEntidad(null)
+                .codigoEntidad(null)
+                .fechaCorte(MuricField.MuricFieldNameTypeSubType.builder()
+                        .name(null)
+                        .type(MuricField.MuricFieldNameTypeSubType.MuricFieldLogicalType.builder().build())
+                        .build())
+                .fechaGeneracion(MuricField.MuricFieldNameTypeSubType.builder()
+                        .name(null)
+                        .type(MuricField.MuricFieldNameTypeSubType.MuricFieldLogicalType.builder().build())
+                        .build())
+                .comentarios(null)
+                .firma(null)
+                .palabraClave(null)
+                .creditoFields(creditoFields)
+                .movimientoFields(movimientoFields)
+                .demograficoFields(demograficoFields)
+                .build();
     }
 
 }

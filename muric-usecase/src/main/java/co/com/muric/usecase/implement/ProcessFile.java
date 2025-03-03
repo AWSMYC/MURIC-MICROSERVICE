@@ -1,18 +1,17 @@
 package co.com.muric.usecase.implement;
 
-import co.com.muric.entities.dto.Avro;
-import co.com.muric.entities.model.database.MuricField;
 import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
 import co.com.muric.entities.model.excel.InformacionCredito;
 import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.model.excel.UnifiedCreditInformation;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import co.com.muric.entities.util.StaticVariables;
+import co.com.muric.usecase.util.FileDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -26,38 +25,34 @@ public class ProcessFile {
 
     private static final Logger logger = LogManager.getLogger(ProcessFile.class);
 
-    public static Avro generateAvroFromDataBase() {
-        //muricRepository.findData();
-        //superintendenciaAPI.sendAvro(Avro.builder().build());
-        return Avro.builder().build();
+    public static List<UnifiedCreditInformation> processData(String source) throws IOException {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        try  {
+            CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
+            CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
+            CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
+            CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
+            List<UnifiedCreditInformation> unifiedCreditInformation = ProcessFile.agruparCreditos(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
+            return unifiedCreditInformation;
+        } catch (Exception e) {
+            logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
+            throw new IOException(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
+        }
     }
 
-    public static Avro avroMapper(List<InformacionCredito> informacionCreditoList,
-                                   List<AtributoCreditoDeuda> atributoCreditoDeudaList,
-                                   List<MovimientoCartera> movimientoCarteraList) {
-        List<Object> creditoFields = new ArrayList<>();
-        List<Object> movimientoFields = new ArrayList<>();
-        List<Object> demograficoFields = new ArrayList<>();
-        return Avro.builder()
-                .type(null)
-                .name(null)
-                .tipoEntidad(null)
-                .codigoEntidad(null)
-                .fechaCorte(MuricField.MuricFieldNameTypeSubType.builder()
-                        .name(null)
-                        .type(MuricField.MuricFieldNameTypeSubType.MuricFieldLogicalType.builder().build())
-                        .build())
-                .fechaGeneracion(MuricField.MuricFieldNameTypeSubType.builder()
-                        .name(null)
-                        .type(MuricField.MuricFieldNameTypeSubType.MuricFieldLogicalType.builder().build())
-                        .build())
-                .comentarios(null)
-                .firma(null)
-                .palabraClave(null)
-                .creditoFields(creditoFields)
-                .movimientoFields(movimientoFields)
-                .demograficoFields(demograficoFields)
-                .build();
+    public static <T> CompletableFuture<T> fetchAsync(DataSupplier<T> supplier, ExecutorService executor) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return supplier.get();
+            } catch (IOException e) {
+                throw new RuntimeException(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
+            }
+        }, executor);
+    }
+
+    @FunctionalInterface
+    private interface DataSupplier<T> {
+        T get() throws IOException;
     }
 
     public static List<UnifiedCreditInformation> agruparCreditos(
@@ -66,7 +61,7 @@ public class ProcessFile {
             List<MovimientoCartera> movimientoCarteraList) {
 
         Map<String, UnifiedCreditInformation> creditosMap = new ConcurrentHashMap<>();
-        ExecutorService executor = Executors.newFixedThreadPool(3); // Pool de 3 hilos
+        ExecutorService executor = Executors.newFixedThreadPool(3);
 
         Function<Object, String> generarClave = obj -> {
             if (obj instanceof InformacionCredito) {
@@ -82,7 +77,6 @@ public class ProcessFile {
             return "";
         };
 
-        // Ejecutar los tres for en paralelo con CompletableFuture
         CompletableFuture<Void> futureInformacionCredito = CompletableFuture.runAsync(() -> {
             for (InformacionCredito ic : informacionCreditoList) {
                 String clave = generarClave.apply(ic);
@@ -146,11 +140,7 @@ public class ProcessFile {
                 unifiedCreditInformation.setPerdidaDadoIncumplimiento(mc.getPerdidaDadoIncumplimiento());
             }
         }, executor);
-
-        // Esperar que todas las tareas terminen
         CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
-
-        // Apagar el pool de hilos
         executor.shutdown();
 
         return new ArrayList<>(creditosMap.values());
