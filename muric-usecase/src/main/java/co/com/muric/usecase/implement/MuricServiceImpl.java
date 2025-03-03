@@ -31,7 +31,7 @@ public class MuricServiceImpl implements IMuricService {
     public MuricResponseDTO generateAvro(String source, String type) {
         try {
             if (StaticVariables.TYPE_FILE.equalsIgnoreCase(type)) {
-                ProcessData.generateUnifiedCreditInformation(source);
+                ProcessData.generateAvroFormat(source);
                 return MuricResponseDTO.builder()
                         .resposeCode(HttpStatus.OK.value())
                         .responseType(HttpStatus.OK.toString())
