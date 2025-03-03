@@ -21,18 +21,18 @@ import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 @Service
-public class ProcessFile {
+public class ProcessData {
 
-    private static final Logger logger = LogManager.getLogger(ProcessFile.class);
+    private static final Logger logger = LogManager.getLogger(ProcessData.class);
 
-    public static List<UnifiedCreditInformation> processData(String source) throws IOException {
+    public static List<UnifiedCreditInformation> generateUnifiedCreditInformation(String source) throws IOException {
         ExecutorService executor = Executors.newFixedThreadPool(3);
         try  {
             CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
             CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
             CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
             CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
-            List<UnifiedCreditInformation> unifiedCreditInformation = ProcessFile.agruparCreditos(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
+            List<UnifiedCreditInformation> unifiedCreditInformation = ProcessData.agruparCreditos(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
             return unifiedCreditInformation;
         } catch (Exception e) {
             logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));

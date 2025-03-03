@@ -33,7 +33,7 @@ public class MuricServiceImpl implements IMuricService {
     public List<UnifiedCreditInformation> generateAvro(String source, String type) {
         try {
             if (StaticVariables.TYPE_FILE.equalsIgnoreCase(type)) {
-                return ProcessFile.processData(source);
+                return ProcessData.generateUnifiedCreditInformation(source);
             } else if (StaticVariables.TYPE_DATABASE.equalsIgnoreCase(type)) {
                 Avro avroData = generateAvroFromDataBase();
                 if (avroData != null) {
