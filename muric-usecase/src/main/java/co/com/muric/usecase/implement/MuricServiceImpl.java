@@ -3,7 +3,6 @@ package co.com.muric.usecase.implement;
 import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
-import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.interfaces.IMuricService;
 import co.com.muric.usecase.util.ResponseFormat;
 import org.apache.logging.log4j.LogManager;
@@ -18,11 +17,9 @@ public class MuricServiceImpl implements IMuricService {
 
     private static final Logger logger = LogManager.getLogger(MuricServiceImpl.class);
 
-    private final IMuricRepository muricRepository;
     private final ISuperintendenciaAPI superintendenciaAPI;
 
-    public MuricServiceImpl(IMuricRepository muricRepository, ISuperintendenciaAPI superintendenciaAPI) {
-        this.muricRepository = muricRepository;
+    public MuricServiceImpl(ISuperintendenciaAPI superintendenciaAPI) {
         this.superintendenciaAPI = superintendenciaAPI;
     }
 
