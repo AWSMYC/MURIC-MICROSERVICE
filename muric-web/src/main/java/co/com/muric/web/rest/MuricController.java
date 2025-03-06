@@ -1,12 +1,8 @@
 package co.com.muric.web.rest;
 
 import co.com.muric.entities.util.StaticVariables;
-import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
-import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.interfaces.IMuricService;
 import co.com.muric.web.util.ValidateRequest;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

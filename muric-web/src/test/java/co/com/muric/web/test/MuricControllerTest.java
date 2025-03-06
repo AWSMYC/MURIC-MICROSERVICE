@@ -22,6 +22,20 @@ import static org.springframework.http.HttpStatus.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class MuricControllerTest {
 
+    private static final String SOURCE_PATH = "/Users/kristianhdez/Desktop/Mapa funcional de variables.xlsx";
+    private static final String TYPE_FILE = "FILE";
+    private static final String TEST_SOURCE = "testSource";
+    private static final String GENERIC_VALID_TYPE =  "validType";
+    private static final String GENERIC_INVALID=  "invalid";
+    private static final String GENERIC_VALID_SOURCE = "validSource";
+    private static final String GENERIC_SOURCE_PATH = "sourcePath";
+    private static final String INVALID_TYPE = "INVALID_TYPE";
+    private static final String EMPTY_TYPE = "";
+    private static final String EMPTY_SOURCE = "";
+    private static final String EMPTY_BLANK_SOURCE = "   ";
+    private static final String SOME_SOURCE = "someSource";
+    private static final String SPECIFIC_TYPE = "SPECIFIC_TYPE";
+
     @Mock
     private IMuricService muricService;
 
@@ -30,87 +44,30 @@ public class MuricControllerTest {
 
     @Test
     public void testGenerateAvro_Success() {
-        String source = "/Users/kristianhdez/Desktop/Mapa funcional de variables.xlsx";
-        String type = "FILE";
-        when(muricService.generateAvro(source, type)).thenReturn(MuricResponseDTO.builder().build());
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
+        when(muricService.generateAvro(SOURCE_PATH, TYPE_FILE)).thenReturn(MuricResponseDTO.builder().build());
+        ResponseEntity<?> response = muricController.generateAvro(SOURCE_PATH, TYPE_FILE);
         assertEquals(OK, response.getStatusCode());
     }
 
     @Test
-    public void testGenerateAvro_InvalidType() {
-        String source = "testSource";
-        String type = "invalid";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
-        assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-    }
-
-    @Test
-    public void testGenerateAvro_InvalidTypeInputData() {
-        String source = "validSource";
-        String type = "INVALID_TYPE";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
-        MuricResponseDTO responseBody = (MuricResponseDTO) response.getBody();
-        assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-    }
-
-    @Test
     public void testGenerateAvro_EmptySourceAndType() {
-        String source = "";
-        String type = "";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
+        ResponseEntity<?> response = muricController.generateAvro(EMPTY_SOURCE, EMPTY_TYPE);
         MuricResponseDTO responseBody = (MuricResponseDTO) response.getBody();
-        assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-    }
-
-    @Test
-    public void testGenerateAvro_HandleSpecificException() {
-        String source = "testSource";
-        String type = "validType";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
-        assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-    }
-
-    @Test
-    public void testGenerateAvro_ExceptionHandling() {
-        String source = "testSource";
-        String type = "validType";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
         assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
     }
 
     @Test
     public void testGenerateAvro_NullSource() {
-        String source = null;
-        String type = "FILE";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
-        assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-    }
-
-    @Test
-    public void testGenerateAvro_NullType() {
-        String source = "validSource";
-        String type = null;
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
-        assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-    }
-
-    @Test
-    public void testGenerateAvro_InvalidTypeWithSpaces() {
-        String source = "validSource";
-        String type = "   "; // Space as an invalid type
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
+        ResponseEntity<?> response = muricController.generateAvro(null, TYPE_FILE);
         assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
     }
 
     @Test
     public void testGenerateAvro_CustomExceptionHandling() {
-        String source = "sourcePath";
-        String type = "validType";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
+        ResponseEntity<?> response = muricController.generateAvro(GENERIC_SOURCE_PATH, GENERIC_VALID_TYPE);
         MuricResponseDTO responseBody = (MuricResponseDTO) response.getBody();
         assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-        assertTrue(responseBody.getResposeMessage().contains("validType"));
+        assertTrue(responseBody.getResposeMessage().contains(GENERIC_VALID_TYPE));
     }
 
     @Test
@@ -120,12 +77,4 @@ public class MuricControllerTest {
         assertEquals(200, response.getBody());
     }
 
-    // Additional tests to ensure coverage for various edge cases
-    @Test
-    public void testGenerateAvro_SpecificValidType() {
-        String source = "someSource";
-        String type = "SPECIFIC_TYPE";
-        ResponseEntity<?> response = muricController.generateAvro(source, type);
-        assertEquals(BAD_REQUEST.value(), response.getStatusCode().value());
-    }
 }
