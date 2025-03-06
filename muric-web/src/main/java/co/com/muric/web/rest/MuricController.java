@@ -1,6 +1,8 @@
 package co.com.muric.web.rest;
 
 import co.com.muric.entities.util.StaticVariables;
+import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
+import co.com.muric.infrastructure.db.interfaces.IMuricRepository;
 import co.com.muric.usecase.interfaces.IMuricService;
 import co.com.muric.web.util.ValidateRequest;
 import lombok.AllArgsConstructor;
@@ -15,11 +17,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @CrossOrigin(origins = StaticVariables.CROSSORIGINS, allowedHeaders = StaticVariables.ALLOWHEADERS)
 @RequestMapping(value = StaticVariables.BASE_REST_PATH, produces = APPLICATION_JSON_VALUE)
-@AllArgsConstructor
 public class MuricController {
 
-    @Autowired
     private final IMuricService muricService;
+
+    public MuricController(IMuricService muricService) {
+        this.muricService = muricService;
+    }
 
     @GetMapping(value = StaticVariables.GENERATE_AVRO_REST_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> generateAvro(@RequestParam(name = StaticVariables.SOURCE_REQUESTPARAM, required = false) String source,
