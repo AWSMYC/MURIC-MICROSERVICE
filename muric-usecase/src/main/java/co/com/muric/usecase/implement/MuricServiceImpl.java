@@ -1,6 +1,5 @@
 package co.com.muric.usecase.implement;
 
-import co.com.muric.entities.dto.Avro;
 import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
@@ -38,7 +37,7 @@ public class MuricServiceImpl implements IMuricService {
                         .resposeMessage(StaticVariables.PROCESS_FILE_OK)
                         .build();
             } else if (StaticVariables.TYPE_DATABASE.equalsIgnoreCase(type)) {
-                Avro avroData = generateAvroFromDataBase();
+                Object avroData = generateAvroFromDataBase();
                 if (avroData != null) {
                     return ResponseFormat.createSuccessResponse(StaticVariables.PROCESS_DATABASE_OK);
                 } else {
@@ -58,10 +57,10 @@ public class MuricServiceImpl implements IMuricService {
         }
     }
 
-    public static Avro generateAvroFromDataBase() {
+    public static Object generateAvroFromDataBase() {
         //muricRepository.findData();
         //superintendenciaAPI.sendAvro(Avro.builder().build());
-        return Avro.builder().build();
+        return null;
     }
 
 }

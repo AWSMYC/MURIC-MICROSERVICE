@@ -11,8 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "movimientos_cartera")
-public class MovimientosCartera {
+@Table(name = "atributos_creditos_deudas")
+public class AtributosCreditosDeudas {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,29 +21,8 @@ public class MovimientosCartera {
     private String identificacionCreditoEntidad;
     private Integer tipoIdentificacion;
     private String numeroIdentificacion;
-    private Integer fechaCorte;
-    private String calificacionCredito;
-    private Integer estado;
-    private Integer periodoGracia;
-    private Integer diasMora;
-    private Float tasaInteres;
-    private Float spreadTasaInteres;
-    private Float saldoCapital;
-    private Float saldoIntereses;
-    private Float saldoOtros;
-    private Integer modeloProvisiones;
-    private Float provisionProciclica;
-    private Float provisionContraciclica;
-    private Float provisionAdicionalPoliticaEntidad;
-    private Float provisionOtros;
-    private Float cuotaEsperadaCapital;
-    private Float cuotaEsperadaIntereses;
-    private Float cuotaRecibidaCapital;
-    private Float cuotaRecibidaIntereses;
-    private Float valorGarantia;
-    private Integer fechaGarantia;
-    private Float probabilidadIncumplimientoCredito;
-    private Float perdidaDadoIncumplimiento;
+    private Integer claveAtributo;
+    private String valorAtributo;
 
     // Relación con InformacionCreditos
     @ManyToOne(fetch = FetchType.LAZY)

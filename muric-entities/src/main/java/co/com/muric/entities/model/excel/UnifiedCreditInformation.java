@@ -14,7 +14,7 @@ public class UnifiedCreditInformation {
     private Integer tipoIdentificacion;
     private String numeroIdentificacion;
 
-    // Campos de InformacionCredito
+    // Campos de InformacionCreditos
     private Integer modalidad;
     private Integer codigoProducto;
     private Integer calidadDeudor;
@@ -28,11 +28,11 @@ public class UnifiedCreditInformation {
     private String moneda;
     private String estadoRegistro;
 
-    // Campos de AtributoCreditoDeuda
+    // Campos de AtributosCreditosDeudas
     private Integer claveAtributo;
     private String valorAtributo;
 
-    // Campos de MovimientoCartera
+    // Campos de MovimientosCartera
     private Integer fechaCorte;
     private String calificacionCredito;
     private Integer estado;

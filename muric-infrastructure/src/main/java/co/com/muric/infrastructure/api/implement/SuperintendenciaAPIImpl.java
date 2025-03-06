@@ -1,6 +1,5 @@
 package co.com.muric.infrastructure.api.implement;
 
-import co.com.muric.entities.dto.Avro;
 import co.com.muric.entities.dto.MuricResponseDTO;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,7 +18,7 @@ public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
     private static final String PASSWORD = "SmXpcm8wLjE5Nzgk";
 
     @Override
-    public MuricResponseDTO sendAvro(Avro avro) {
+    public MuricResponseDTO sendAvro(Object avro) {
         String authToken = null;
         Integer responseCode = null;
         try {
