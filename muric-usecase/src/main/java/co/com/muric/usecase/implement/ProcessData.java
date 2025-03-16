@@ -9,7 +9,6 @@ import co.com.muric.usecase.util.FileDataSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -46,13 +45,25 @@ public class ProcessData {
         }
     }
 
-    private static Map<String, Object> generarReporte(List<InformacionCredito> informacionCreditoList, List<AtributoCreditoDeuda> atributoCreditoDeudaList, List<MovimientoCartera> movimientoCarteraList) {
+    private static Map<String, Object> generarReporte(List<InformacionCredito> informacionCreditoList, List<AtributoCreditoDeuda> atributoCreditoDeudaList, List<MovimientoCartera> movimientoCarteraList) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(3);
         CompletableFuture<List<Map<String, Object>>> creditosFuture = CompletableFuture.supplyAsync(() -> informacionCreditoList.stream().map(ProcessData::mapearCredito).collect(Collectors.toList()), executor);
         CompletableFuture<List<Map<String, Object>>> movimientosFuture = CompletableFuture.supplyAsync(() -> movimientoCarteraList.stream().map(ProcessData::mapearMovimiento).collect(Collectors.toList()), executor);
         CompletableFuture<List<Map<String, Object>>> demograficosFuture = CompletableFuture.supplyAsync(() -> atributoCreditoDeudaList.stream().map(ProcessData::mapearDemografico).collect(Collectors.toList()), executor);
         CompletableFuture.allOf(creditosFuture, movimientosFuture, demograficosFuture).join();
         executor.shutdown();
+        generarRUC(Map.of(
+                "tipo_entidad", 1,
+                "codigo_entidad", 100,
+                "fecha_corte", 20210101,
+                "fecha_generacion", 20210301,
+                "comentarios", "Registro de crédito",
+                "firma", "FirmaDigitalEjemplo",
+                "palabra_clave", "Confidencial",
+                "creditos", creditosFuture.get(),
+                "movimientos", movimientosFuture.get(),
+                "demograficos", demograficosFuture.get()
+        ));
         try {
             return Map.of(
             "tipo_entidad", 1,
@@ -149,7 +160,6 @@ public class ProcessData {
 
 
     private static RUC generarRUC(Map<String, Object> reporteData) {
-        // Extraer datos del reporte
         int tipoEntidad = (int) reporteData.get("tipo_entidad");
         int codigoEntidad = (int) reporteData.get("codigo_entidad");
         int fechaCorte = (int) reporteData.get("fecha_corte");
@@ -158,16 +168,14 @@ public class ProcessData {
         String firma = (String) reporteData.get("firma");
         String palabraClave = (String) reporteData.get("palabra_clave");
 
-        // Convertir las fechas de formato `int` (días desde epoch) a LocalDate
         LocalDate fechaCorteLocal = LocalDate.ofEpochDay(fechaCorte);
         LocalDate fechaGeneracionLocal = LocalDate.ofEpochDay(fechaGeneracion);
 
-        // Convertir los datos de creditos, movimientos y demograficos
+
         List<Map<String, Object>> creditos = (List<Map<String, Object>>) reporteData.get("creditos");
         List<Map<String, Object>> movimientos = (List<Map<String, Object>>) reporteData.get("movimientos");
         List<Map<String, Object>> demograficos = (List<Map<String, Object>>) reporteData.get("demograficos");
 
-        // Convertir los creditos
         List<credito> creditosList = creditos.stream().map(creditoData -> {
 
             return credito.newBuilder()
@@ -192,7 +200,6 @@ public class ProcessData {
                     .build();
         }).collect(Collectors.toList());
 
-        // Convertir los movimientos
         List<movimiento> movimientosList = movimientos.stream().map(movimientoData -> {
             return movimiento.newBuilder()
                     .setIdentificacionCreditoEntidad((String) movimientoData.get("identificacion_credito_entidad"))
@@ -217,7 +224,6 @@ public class ProcessData {
                     .build();
         }).collect(Collectors.toList());
 
-        // Convertir los demográficos
         List<Demografico> demograficosList = demograficos.stream().map(demograficoData -> {
             return Demografico.newBuilder()
                     .setIdentificacionCreditoEntidad((String) demograficoData.get("identificacion_credito_entidad"))
@@ -230,7 +236,6 @@ public class ProcessData {
                     .build();
         }).collect(Collectors.toList());
 
-        // Crear el objeto RUC con los datos obtenidos
         return RUC.newBuilder()
                 .setTipoEntidad(tipoEntidad)
                 .setCodigoEntidad(codigoEntidad)
