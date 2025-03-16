@@ -15,7 +15,7 @@ public class AvroWriter {
         RUC ruc = RUC.newBuilder()
                 .setTipoEntidad(1)
                 .setCodigoEntidad(12345)
-                .setFechaCorte(LocalDate.ofEpochDay(19523))  // Fecha en formato `int` (días desde epoch)
+                .setFechaCorte(LocalDate.ofEpochDay(19523))
                 .setFechaGeneracion(LocalDate.ofEpochDay(19523))
                 .setComentarios("Datos de prueba")
                 .setFirma("FirmaDigitalEjemplo")
@@ -84,16 +84,13 @@ public class AvroWriter {
 
         String avroDirPath = "/Users/kristianhdez/Desktop/MURIC-MICROSERVICE/muric-entities/src/main/resources/avro";
 
-        // Crear el directorio si no existe
         File avroDir = new File(avroDirPath);
         if (!avroDir.exists()) {
             avroDir.mkdirs();
         }
 
-        // Definir la ruta del archivo Avro
         File avroFile = new File(avroDir, "ruc_data.avro");
 
-        // Escribir en archivo Avro
         DatumWriter<RUC> datumWriter = new SpecificDatumWriter<>(RUC.class);
         try (DataFileWriter<RUC> dataFileWriter = new DataFileWriter<>(datumWriter)) {
             dataFileWriter.create(ruc.getSchema(), avroFile);
