@@ -6,15 +6,8 @@ import org.apache.avro.specific.SpecificDatumWriter;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Collections;
-import co.com.muric.entities.model.avro.tipo_ident;
-import co.com.muric.entities.model.avro.modalidad_c;
-import co.com.muric.entities.model.avro.productos_id;
-import co.com.muric.entities.model.avro.calidad_d;
-import co.com.muric.entities.model.avro.tipo_g;
-import co.com.muric.entities.model.avro.estado_reg;
 
 public class AvroWriter {
     public static void main(String[] args) {
