@@ -7,9 +7,14 @@ import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.usecase.util.FileDataSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.avro.file.DataFileWriter;
+import org.apache.avro.io.DatumWriter;
+import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -236,7 +241,15 @@ public class ProcessData {
                     .build();
         }).collect(Collectors.toList());
 
-        return RUC.newBuilder()
+        String avroDirPath = "/Users/kristianhdez/Desktop/MURIC-MICROSERVICE/muric-entities/src/main/resources/avro";
+
+        File avroDir = new File(avroDirPath);
+        if (!avroDir.exists()) {
+            avroDir.mkdirs();
+        }
+
+        File avroFile = new File(avroDir, "ruc_data.avro");
+        RUC ruc = RUC.newBuilder()
                 .setTipoEntidad(tipoEntidad)
                 .setCodigoEntidad(codigoEntidad)
                 .setFechaCorte(fechaCorteLocal)
@@ -248,6 +261,16 @@ public class ProcessData {
                 .setMovimientos(movimientosList)
                 .setDemograficos(demograficosList)
                 .build();
+        DatumWriter<RUC> datumWriter = new SpecificDatumWriter<>(RUC.class);
+        try (DataFileWriter<RUC> dataFileWriter = new DataFileWriter<>(datumWriter)) {
+            dataFileWriter.create(ruc.getSchema(), avroFile);
+            dataFileWriter.append(ruc);
+            System.out.println("Archivo Avro creado exitosamente en: " + avroFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ruc;
     }
 
     private static <T extends Enum<T>> T convertirTipoGenerico(String valor, Class<T> enumClass) {
