@@ -271,7 +271,50 @@ public class ProcessData {
             e.printStackTrace();
         }
 
+        writeSegmentedAvroFiles(avroDirPath,ruc);
+
         return ruc;
+    }
+
+    public static void writeSegmentedAvroFiles(String avroDirPath, RUC ruc) {
+        File avroDir = new File(avroDirPath);
+        if (!avroDir.exists()) {
+            avroDir.mkdirs();
+        }
+
+        File avroFile = new File(avroDir, "ruc_data.avro");
+        DatumWriter<RUC> datumWriter = new SpecificDatumWriter<>(RUC.class);
+        try (DataFileWriter<RUC> dataFileWriter = new DataFileWriter<>(datumWriter)) {
+            dataFileWriter.create(ruc.getSchema(), avroFile);
+            dataFileWriter.append(ruc);
+
+            if (avroFile.length() > 10 * 1024 * 1024) { // Si el archivo supera los 10MB, segmentarlo
+                segmentAvroFile(avroFile, avroDir);
+            }
+
+            System.out.println("Archivo Avro creado exitosamente en: " + avroFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void segmentAvroFile(File avroFile, File avroDir) throws IOException {
+        long maxSize = 5 * 1024 * 1024; // 5MB
+        byte[] fileBytes = java.nio.file.Files.readAllBytes(avroFile.toPath());
+        int totalParts = (int) Math.ceil((double) fileBytes.length / maxSize);
+
+        for (int i = 0; i < totalParts; i++) {
+            int start = i * (int) maxSize;
+            int end = Math.min(start + (int) maxSize, fileBytes.length);
+            byte[] chunk = new byte[end - start];
+            System.arraycopy(fileBytes, start, chunk, 0, chunk.length);
+
+            File splitFile = new File(avroDir, "ruc_data_part" + (i + 1) + ".avro");
+            java.nio.file.Files.write(splitFile.toPath(), chunk);
+            System.out.println("Segmento creado: " + splitFile.getAbsolutePath());
+        }
+
+        avroFile.delete(); // Borrar el archivo original después de segmentarlo
     }
 
 }
