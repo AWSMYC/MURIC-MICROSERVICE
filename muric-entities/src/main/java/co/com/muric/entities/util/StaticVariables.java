@@ -75,5 +75,10 @@ public class StaticVariables {
     public static final String FECHA_GARANTIA = "fecha_garantia";
     public static final String PROBABILIDAD_INCUMPLIMIENTO_CREDITO = "probabilidad_incumplimiento_credito";
 
+    // SUPERFINANCIERA KEYS
+    public static final String AUTH_API_URL = "https://apidev.superfinanciera.gov.co/v2/services/auth";
+    public static final String AVRO_API_URL = "https://apidev.superfinanciera.gov.co/v2/services/muric";
+    public static final String USER_NAME = "nombre_usuario";
+    public static final String PASSWORD = "SmXpcm8wLjE5Nzgk";
 }
 

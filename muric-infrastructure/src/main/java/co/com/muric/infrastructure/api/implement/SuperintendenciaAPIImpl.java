@@ -1,6 +1,7 @@
 package co.com.muric.infrastructure.api.implement;
 
 import co.com.muric.entities.dto.MuricResponseDTO;
+import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,12 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
-    private static final Logger logger = LogManager.getLogger(SuperintendenciaAPIImpl.class);
-    private static final String AUTH_API_URL = "https://apidev.superfinanciera.gov.co/v2/services/auth";
-    private static final String AVRO_API_URL = "https://apidev.superfinanciera.gov.co/v2/services/muric";
-    private static final String USER_NAME = "nombre_usuario";
-    private static final String PASSWORD = "SmXpcm8wLjE5Nzgk";
 
+    private static final Logger logger = LogManager.getLogger(SuperintendenciaAPIImpl.class);
+    
     @Override
     public MuricResponseDTO sendAvro(Object avro) {
         String authToken = null;
@@ -26,7 +24,7 @@ public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = RequestBody.create(jsonBody, mediaType);
             Request request = new Request.Builder()
-                    .url(AVRO_API_URL)
+                    .url(StaticVariables.AVRO_API_URL)
                     .post(requestBody)
                     .addHeader("Content-Type", "application/json")
                     .build();
@@ -54,11 +52,11 @@ public class SuperintendenciaAPIImpl implements ISuperintendenciaAPI {
         String authToken = null;
         Integer responseCode = null;
         try {
-            String jsonBody = String.format("{\"usuario\":\"%s\",\"contrasena\":\"%s=\"}", USER_NAME, PASSWORD);
+            String jsonBody = String.format("{\"usuario\":\"%s\",\"contrasena\":\"%s=\"}", StaticVariables.USER_NAME, StaticVariables.PASSWORD);
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = RequestBody.create(jsonBody, mediaType);
             Request request = new Request.Builder()
-                    .url(AUTH_API_URL)
+                    .url(StaticVariables.AUTH_API_URL)
                     .post(requestBody)
                     .addHeader("Content-Type", "application/json")
                     .build();
