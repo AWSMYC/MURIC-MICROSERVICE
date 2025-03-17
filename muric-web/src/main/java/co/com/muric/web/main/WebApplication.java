@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @ComponentScan(basePackages = StaticVariables.COMPONENT_SCARN)
 public class WebApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(WebApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WebApplication.class, args);
+    }
 }

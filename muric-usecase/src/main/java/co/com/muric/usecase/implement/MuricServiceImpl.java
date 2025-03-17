@@ -49,7 +49,7 @@ public class MuricServiceImpl implements IMuricService {
                 return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_GENERIC_ERROR, source);
             }
         } catch (Exception e) {
-            logger.error( MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR, type));
+            logger.error(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR, type));
             return ResponseFormat.createErrorResponse(StaticVariables.PROCESS_GENERIC_ERROR, null);
         }
     }

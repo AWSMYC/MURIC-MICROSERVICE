@@ -1,6 +1,6 @@
 package co.com.muric.usecase.util;
 
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
 
 public class FormatFields {
 

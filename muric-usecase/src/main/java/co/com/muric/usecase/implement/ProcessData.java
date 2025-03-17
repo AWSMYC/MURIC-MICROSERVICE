@@ -21,7 +21,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +34,8 @@ public class ProcessData {
 
     public static Object generateAvroFormat(String source) throws IOException {
         ExecutorService executor = Executors.newFixedThreadPool(3);
-        try  {
-            CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
+        try {
+                CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
             CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
             CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
             CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
@@ -67,23 +70,23 @@ public class ProcessData {
         ));
         try {
             return Map.of(
-            "tipo_entidad", 1,
-            "codigo_entidad", 100,
-            "fecha_corte", 20210101,
-            "fecha_generacion", 20210301,
-            "comentarios", "Registro de crédito",
-            "firma", "FirmaDigitalEjemplo",
-            "palabra_clave", "Confidencial",
-            "creditos", creditosFuture.get(),
-            "movimientos", movimientosFuture.get(),
-            "demograficos", demograficosFuture.get()
+                    "tipo_entidad", 1,
+                    "codigo_entidad", 100,
+                    "fecha_corte", 20210101,
+                    "fecha_generacion", 20210301,
+                    "comentarios", "Registro de crédito",
+                    "firma", "FirmaDigitalEjemplo",
+                    "palabra_clave", "Confidencial",
+                    "creditos", creditosFuture.get(),
+                    "movimientos", movimientosFuture.get(),
+                    "demograficos", demograficosFuture.get()
             );
         } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException("Error generando el reporte", e);
+            throw new RuntimeException("Error generando el reporte", e);
         }
     }
 
-     private static Map<String, Object> mapearCredito(InformacionCredito ic) {
+    private static Map<String, Object> mapearCredito(InformacionCredito ic) {
         Map<String, Object> map = new HashMap<>();
         map.put("identificacion_credito_entidad", ic.getIdentificacionCreditoEntidad());
         map.put("tipo_identificacion", "_" + ic.getTipoIdentificacion());
@@ -101,7 +104,8 @@ public class ProcessData {
         map.put("moneda", ic.getMoneda());
         map.put("estado_registro", ic.getEstadoRegistro());
         return map;
-     }
+    }
+
     private static Map<String, Object> mapearMovimiento(MovimientoCartera mc) {
         Map<String, Object> map = new HashMap<>();
         map.put("identificacion_credito_entidad", mc.getIdentificacionCreditoEntidad());
@@ -209,7 +213,7 @@ public class ProcessData {
                     .setPeriodoGracia(Enum.valueOf(periodo_g.class, (String) movimientoData.get("periodo_gracia")))
                     .setDiasMora((int) movimientoData.get("dias_mora"))
                     .setTasaInteres((float) movimientoData.get("tasa_interes"))
-                    .setSaldoCapital((float) movimientoData.get("saldo_capital"))
+                    .setSaldoCapital(5.0f)
                     .setSaldoIntereses((float) movimientoData.get("saldo_intereses"))
                     .setSaldoOtros((float) movimientoData.get("saldo_otros"))
                     .setSpreadTasaInteres((float) movimientoData.get("spread_tasa_interes"))
@@ -271,7 +275,7 @@ public class ProcessData {
             e.printStackTrace();
         }
 
-        writeSegmentedAvroFiles(avroDirPath,ruc);
+        writeSegmentedAvroFiles(avroDirPath, ruc);
 
         return ruc;
     }
@@ -314,7 +318,7 @@ public class ProcessData {
             System.out.println("Segmento creado: " + splitFile.getAbsolutePath());
         }
 
-        avroFile.delete(); // Elimina el archivo original después de segmentarlo
+        //avroFile.delete(); // Elimina el archivo original después de segmentarlo
     }
 
 }

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import java.text.MessageFormat;
 
 public class ValidateRequest {
-
     public static boolean isInvalidType(String type) {
         return type == null || type.isBlank();
     }
@@ -47,5 +46,4 @@ public class ValidateRequest {
                         .resposeMessage(MessageFormat.format(StaticVariables.PROCESS_GENERIC_ERROR, e))
                         .build());
     }
-
 }
