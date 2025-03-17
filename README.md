@@ -3,6 +3,7 @@ Aloja el código fuente de integración del proyecto MURIC para el consumo del A
 # JAVA -VERSION
 OPEN JDK 17
 # COMPILAtion PROJECT
+Important!: Run mvn clean compile when you need to generate a new model if the avro scheme has changed
 Execute mvn clean install in the root directory of each module  
 firt compliation order:
 1. muric-entities
@@ -25,7 +26,6 @@ Parámetros de petición :
 
 # ENDPOINT MICROSERVICE - HEALTH CEHCK
 {{host}}/muric/healthCheck
-
 
 
 
