@@ -80,5 +80,13 @@ public class StaticVariables {
     public static final String AVRO_API_URL = "https://apidev.superfinanciera.gov.co/v2/services/muric";
     public static final String USER_NAME = "nombre_usuario";
     public static final String PASSWORD = "SmXpcm8wLjE5Nzgk";
+    public static final String MEDIA_TYPE = "application/json; charset=utf-8";
+    public static final String CONTENT_TYPE = "Content-Type";
+    public static final String APPLICATION_TYPE = "application/json";
+    public static final String RESPONSE_BODY_EMPTY = "";
+    public static final String AUTHENTICATION_ERROR = "Error al intentar generar la autenticación: {}";
+    public static final String AVRO_SENT_ERROR = "Error al intentar enviar el segmento .avro {}";
+    public static final String AUTH_BODY= "{\"usuario\":\"%s\",\"contrasena\":\"%s=\"}";
+
 }
 
