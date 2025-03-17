@@ -288,7 +288,7 @@ public class ProcessData {
             dataFileWriter.create(ruc.getSchema(), avroFile);
             dataFileWriter.append(ruc);
 
-            if (avroFile.length() > 10 * 1024 * 1024) { // Si el archivo supera los 10MB, segmentarlo
+            if (avroFile.length() > 10 * 1024 * 1024) { // Si el archivo supera los 10MB, se segmenta
                 segmentAvroFile(avroFile, avroDir);
             }
 
@@ -314,7 +314,7 @@ public class ProcessData {
             System.out.println("Segmento creado: " + splitFile.getAbsolutePath());
         }
 
-        avroFile.delete(); // Borrar el archivo original después de segmentarlo
+        avroFile.delete(); // Elimina el archivo original después de segmentarlo
     }
 
 }
