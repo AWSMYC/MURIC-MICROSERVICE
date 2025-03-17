@@ -66,6 +66,7 @@ public class StaticVariables {
     public static final String PROVISION_CONTRACICLICA ="provision_contraciclica";
     public static final String PROVISION_ADICIONAL_POLITICA_ENTIDAD ="provision_adicional_politica_entidad";
     public static final String PROVISION_OTROS ="provision_otros";
+    public static final String PROVISION_TOTAL ="provision_total";
     public static final String CUOTA_ESPERADA_CAPITAL ="cuota_esperada_capital";
     public static final String CUOTA_ESPERADA_INTERESES ="cuota_esperada_intereses";
     public static final String CUOTA_RECIBIDA_CAPITAL ="cuota_recibida_capital";

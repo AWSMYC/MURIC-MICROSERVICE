@@ -28,6 +28,7 @@ public class MovimientoCartera {
     private Float provisionContraciclica;
     private Float provisionAdicionalPoliticaEntidad;
     private Float provisionOtros;
+    private Float provisionTotal;
     private Float cuotaEsperadaCapital;
     private Float cuotaEsperadaIntereses;
     private Float cuotaRecibidaCapital;

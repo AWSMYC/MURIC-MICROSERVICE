@@ -109,6 +109,7 @@ public class FileDataSource {
                 .provisionContraciclica(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_CONTRACICLICA)))
                 .provisionAdicionalPoliticaEntidad(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_ADICIONAL_POLITICA_ENTIDAD)))
                 .provisionOtros(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_OTROS)))
+                .provisionTotal(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.PROVISION_TOTAL)))
                 .cuotaEsperadaCapital(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.CUOTA_ESPERADA_CAPITAL)))
                 .cuotaEsperadaIntereses(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.CUOTA_ESPERADA_INTERESES)))
                 .cuotaRecibidaCapital(FormatFields.getCellValueAsFloat(cellMap.get(StaticVariables.CUOTA_RECIBIDA_CAPITAL)))
