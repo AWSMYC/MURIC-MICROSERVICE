@@ -6,7 +6,7 @@
 package co.com.muric.entities.model.avro;
 @org.apache.avro.specific.AvroGenerated
 public enum calidad_d implements org.apache.avro.generic.GenericEnumSymbol<calidad_d> {
-  _0  ;
+  _0, _1, _2, _3, _4, _5, _6, _7, _8, _9  ;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"calidad_d\",\"namespace\":\"co.com.muric.entities.model.avro\",\"symbols\":[\"_0\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
