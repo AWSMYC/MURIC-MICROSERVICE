@@ -274,13 +274,4 @@ public class ProcessData {
         return ruc;
     }
 
-    private static <T extends Enum<T>> T convertirTipoGenerico(String valor, Class<T> enumClass) {
-        try {
-            return Enum.valueOf(enumClass, valor);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Valor inválido para la enumeración " + enumClass.getSimpleName() + ": " + valor, e);
-        }
-    }
-
-
 }
