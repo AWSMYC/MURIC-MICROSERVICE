@@ -303,7 +303,7 @@ public class ProcessData {
     }
 
     private static void segmentAvroFile(File avroFile, File avroDir) throws IOException {
-        long maxSize = 5 * 1024 * 1024; // 5MB
+        long maxSize = 4 * 1024 * 1024; // 5MB
         byte[] fileBytes = java.nio.file.Files.readAllBytes(avroFile.toPath());
         int totalParts = (int) Math.ceil((double) fileBytes.length / maxSize);
 
