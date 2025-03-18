@@ -86,6 +86,7 @@ public class StaticVariables {
     public static final String VALOR_GARANTIA = "valor_garantia";
     public static final String FECHA_GARANTIA = "fecha_garantia";
     public static final String PROBABILIDAD_INCUMPLIMIENTO_CREDITO = "probabilidad_incumplimiento_credito";
+    public static final String PERDIDA_DADO_INCUMPLIMIENTO = "perdida_dado_incumplimiento";
 
     // SUPERFINANCIERA KEYS
     public static final String AUTH_API_URL = "https://apidev.superfinanciera.gov.co/v2/services/auth";

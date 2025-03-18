@@ -56,6 +56,7 @@ public class ProcessData {
         CompletableFuture<List<Map<String, Object>>> demograficosFuture = CompletableFuture.supplyAsync(() -> atributoCreditoDeudaList.stream().map(ProcessData::mapearDemografico).collect(Collectors.toList()), executor);
         CompletableFuture.allOf(creditosFuture, movimientosFuture, demograficosFuture).join();
         executor.shutdown();
+        // ESTA PARTE SE DEBE DE ELIMINAR, YA ESTA EN EL RETURN.
         generarRUC(Map.of(
                 StaticVariables.RUC_MAPPIN_TIPO_ENTIDAD, 1,
                 StaticVariables.RUC_MAPPIN_CODIGO_ENTIDAD, 100,
@@ -70,16 +71,16 @@ public class ProcessData {
         ));
         try {
             return Map.of(
-                    "tipo_entidad", 1,
-                    "codigo_entidad", 100,
-                    "fecha_corte", 20210101,
-                    "fecha_generacion", 20210301,
-                    "comentarios", "Registro de crédito",
-                    "firma", "FirmaDigitalEjemplo",
-                    "palabra_clave", "Confidencial",
-                    "creditos", creditosFuture.get(),
-                    "movimientos", movimientosFuture.get(),
-                    "demograficos", demograficosFuture.get()
+                    StaticVariables.RUC_MAPPIN_TIPO_ENTIDAD, 1,
+                    StaticVariables.RUC_MAPPIN_CODIGO_ENTIDAD, 100,
+                    StaticVariables.RUC_MAPPIN_FECHA_CORTE, 20210101,
+                    StaticVariables.RUC_MAPPIN_FECHA_GENERACION, 20210301,
+                    StaticVariables.RUC_MAPPIN_COMENTARIOS , "Registro de crédito",
+                    StaticVariables.RUC_MAPPIN_FIRMA, "FirmaDigitalEjemplo",
+                    StaticVariables.RUC_MAPPIN_PALABRA_CALVE, "Confidencial",
+                    StaticVariables.RUC_MAPPIN_CREDITOS, creditosFuture.get(),
+                    StaticVariables.RUC_MAPPIN_MOVIMIENTOS, movimientosFuture.get(),
+                    StaticVariables.RUC_MAPPIN_DEMOGRAFICOS, demograficosFuture.get()
             );
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException("Error generando el reporte", e);
@@ -88,64 +89,64 @@ public class ProcessData {
 
     private static Map<String, Object> mapearCredito(InformacionCredito ic) {
         Map<String, Object> map = new HashMap<>();
-        map.put("identificacion_credito_entidad", ic.getIdentificacionCreditoEntidad());
-        map.put("tipo_identificacion", "_" + ic.getTipoIdentificacion());
-        map.put("numero_identificacion", ic.getNumeroIdentificacion());
-        map.put("modalidad", "_" + ic.getModalidad());
-        map.put("codigo_producto", "_" + ic.getCodigoProducto());
-        map.put("calidad_deudor", "_" + ic.getCalidadDeudor());
-        map.put("fecha_desembolso", ic.getFechaDesembolso());
-        map.put("fecha_vencimiento", ic.getFechaVencimiento());
-        map.put("valor_desembolsado", ic.getValorDesembolsado());
-        map.put("frecuencia_pago_capital", "_" + ic.getFrecuenciaPagoCapital());
-        map.put("frecuencia_pago_intereses", "_" + ic.getFrecuenciaPagoIntereses());
-        map.put("tipo_tasa", ic.getTipoTasa());
-        map.put("tipo_garantia", "_" + ic.getTipoGarantia());
-        map.put("moneda", ic.getMoneda());
-        map.put("estado_registro", ic.getEstadoRegistro());
+        map.put(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD, ic.getIdentificacionCreditoEntidad());
+        map.put(StaticVariables.TIPO_IDENTIFICACION, "_" + ic.getTipoIdentificacion());
+        map.put(StaticVariables.NUMERO_IDENTIFICACION, ic.getNumeroIdentificacion());
+        map.put(StaticVariables.MODALIDAD, "_" + ic.getModalidad());
+        map.put(StaticVariables.CODIGO_PRODUCTO, "_" + ic.getCodigoProducto());
+        map.put(StaticVariables.CALIDAD_DEUDOR, "_" + ic.getCalidadDeudor());
+        map.put(StaticVariables.FECHA_DESEMBOLSO, ic.getFechaDesembolso());
+        map.put(StaticVariables.FECHA_VENCIMIENTO, ic.getFechaVencimiento());
+        map.put(StaticVariables.VALOR_DESEMBOLSADO, ic.getValorDesembolsado());
+        map.put(StaticVariables.FRECUENCIA_PAGO_CAPITAL, "_" + ic.getFrecuenciaPagoCapital());
+        map.put(StaticVariables.FRECUENCIA_PAGO_INTERESES, "_" + ic.getFrecuenciaPagoIntereses());
+        map.put(StaticVariables.TIPO_TASA, ic.getTipoTasa());
+        map.put(StaticVariables.TIPO_GARANTIA, "_" + ic.getTipoGarantia());
+        map.put(StaticVariables.MONEDA, ic.getMoneda());
+        map.put(StaticVariables.ESTADO_REGISTRO, ic.getEstadoRegistro());
         return map;
     }
 
     private static Map<String, Object> mapearMovimiento(MovimientoCartera mc) {
         Map<String, Object> map = new HashMap<>();
-        map.put("identificacion_credito_entidad", mc.getIdentificacionCreditoEntidad());
-        map.put("tipo_identificacion", "_" + mc.getTipoIdentificacion());
-        map.put("numero_identificacion", mc.getNumeroIdentificacion());
-        map.put("fecha_corte", mc.getFechaCorte());
-        map.put("calificacion_credito", mc.getCalificacionCredito());
-        map.put("estado", "_" + mc.getEstado());
-        map.put("periodo_gracia", "_" + mc.getPeriodoGracia());
-        map.put("dias_mora", mc.getDiasMora());
-        map.put("tasa_interes", mc.getTasaInteres());
-        map.put("spread_tasa_interes", mc.getSpreadTasaInteres());
-        map.put("saldo_capital", mc.getSaldoCapital());
-        map.put("saldo_intereses", mc.getSaldoIntereses());
-        map.put("saldo_otros", mc.getSaldoOtros());
-        map.put("modelo_provisiones", "_" + mc.getModeloProvisiones());
-        map.put("provision_prociclica", mc.getProvisionProciclica());
-        map.put("provision_contraciclica", mc.getProvisionContraciclica());
-        map.put("provision_adicional_politica_entidad", mc.getProvisionAdicionalPoliticaEntidad());
-        map.put("provision_otros", mc.getProvisionOtros());
-        map.put("provision_total", mc.getProvisionTotal());
-        map.put("cuota_esperada_capital", mc.getCuotaEsperadaCapital());
-        map.put("cuota_esperada_intereses", mc.getCuotaEsperadaIntereses());
-        map.put("cuota_recibida_capital", mc.getCuotaRecibidaCapital());
-        map.put("cuota_recibida_intereses", mc.getCuotaRecibidaIntereses());
-        map.put("fecha_garantia", mc.getFechaGarantia());
-        map.put("valor_garantia", mc.getValorGarantia());
-        map.put("probabilidad_incumplimiento_credito", mc.getProbabilidadIncumplimientoCredito());
-        map.put("perdida_dado_incumplimiento", mc.getPerdidaDadoIncumplimiento());
-        map.put("estado_registro", "N000001");
+        map.put(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD, mc.getIdentificacionCreditoEntidad());
+        map.put(StaticVariables.TIPO_IDENTIFICACION, "_" + mc.getTipoIdentificacion());
+        map.put(StaticVariables.NUMERO_IDENTIFICACION, mc.getNumeroIdentificacion());
+        map.put(StaticVariables.FECHA_CORTE, mc.getFechaCorte());
+        map.put(StaticVariables.CALIFICACION_CREDITO, mc.getCalificacionCredito());
+        map.put(StaticVariables.ESTADO, "_" + mc.getEstado());
+        map.put(StaticVariables.PERIODO_GRACIA, "_" + mc.getPeriodoGracia());
+        map.put(StaticVariables.DIAS_MORA, mc.getDiasMora());
+        map.put(StaticVariables.TASA_INTERES, mc.getTasaInteres());
+        map.put(StaticVariables.SPREAD_TASA_INTERES, mc.getSpreadTasaInteres());
+        map.put(StaticVariables.SALDO_CAPITAL, mc.getSaldoCapital());
+        map.put(StaticVariables.SALDO_INTERESES, mc.getSaldoIntereses());
+        map.put(StaticVariables.SALDO_OTROS, mc.getSaldoOtros());
+        map.put(StaticVariables.MODELO_PROVISIONES, "_" + mc.getModeloProvisiones());
+        map.put(StaticVariables.PROVISION_PROCICLICA, mc.getProvisionProciclica());
+        map.put(StaticVariables.PROVISION_CONTRACICLICA, mc.getProvisionContraciclica());
+        map.put(StaticVariables.PROVISION_ADICIONAL_POLITICA_ENTIDAD, mc.getProvisionAdicionalPoliticaEntidad());
+        map.put(StaticVariables.PROVISION_OTROS, mc.getProvisionOtros());
+        map.put(StaticVariables.PROVISION_TOTAL, mc.getProvisionTotal());
+        map.put(StaticVariables.CUOTA_ESPERADA_CAPITAL, mc.getCuotaEsperadaCapital());
+        map.put(StaticVariables.CUOTA_ESPERADA_INTERESES, mc.getCuotaEsperadaIntereses());
+        map.put(StaticVariables.CUOTA_RECIBIDA_CAPITAL, mc.getCuotaRecibidaCapital());
+        map.put(StaticVariables.CUOTA_RECIBIDA_INTERESES, mc.getCuotaRecibidaIntereses());
+        map.put(StaticVariables.FECHA_GARANTIA, mc.getFechaGarantia());
+        map.put(StaticVariables.VALOR_GARANTIA, mc.getValorGarantia());
+        map.put(StaticVariables.PROBABILIDAD_INCUMPLIMIENTO_CREDITO, mc.getProbabilidadIncumplimientoCredito());
+        map.put(StaticVariables.PERDIDA_DADO_INCUMPLIMIENTO, mc.getPerdidaDadoIncumplimiento());
+        map.put(StaticVariables.ESTADO_REGISTRO, "N000001");// NO VIENE EN EL EXCEL
         return map;
     }
 
     private static Map<String, Object> mapearDemografico(AtributoCreditoDeuda ad) {
         return Map.of(
-                "identificacion_credito_entidad", ad.getIdentificacionCreditoEntidad(),
-                "tipo_identificacion", "_" + ad.getTipoIdentificacion(),
-                "numero_identificacion", ad.getNumeroIdentificacion(),
-                "clave_atributo", ad.getClaveAtributo(),
-                "valor_atributo", ad.getValorAtributo()
+                StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD, ad.getIdentificacionCreditoEntidad(),
+                StaticVariables.TIPO_IDENTIFICACION, "_" + ad.getTipoIdentificacion(),
+                StaticVariables.NUMERO_IDENTIFICACION, ad.getNumeroIdentificacion(),
+                StaticVariables.CLAVE_ATRIBUTO, ad.getClaveAtributo(),
+                StaticVariables.VALOR_ATRIBUTO, ad.getValorAtributo()
         );
     }
 
@@ -166,21 +167,21 @@ public class ProcessData {
 
 
     private static RUC generarRUC(Map<String, Object> reporteData) {
-        int tipoEntidad = (int) reporteData.get("tipo_entidad");
-        int codigoEntidad = (int) reporteData.get("codigo_entidad");
-        int fechaCorte = (int) reporteData.get("fecha_corte");
-        int fechaGeneracion = (int) reporteData.get("fecha_generacion");
-        String comentarios = (String) reporteData.get("comentarios");
-        String firma = (String) reporteData.get("firma");
-        String palabraClave = (String) reporteData.get("palabra_clave");
+        int tipoEntidad = (int) reporteData.get(StaticVariables.RUC_MAPPIN_TIPO_ENTIDAD);
+        int codigoEntidad = (int) reporteData.get(StaticVariables.RUC_MAPPIN_CODIGO_ENTIDAD);
+        int fechaCorte = (int) reporteData.get(StaticVariables.RUC_MAPPIN_FECHA_CORTE);
+        int fechaGeneracion = (int) reporteData.get(StaticVariables.RUC_MAPPIN_FECHA_GENERACION);
+        String comentarios = (String) reporteData.get(StaticVariables.RUC_MAPPIN_COMENTARIOS);
+        String firma = (String) reporteData.get(StaticVariables.RUC_MAPPIN_FIRMA);
+        String palabraClave = (String) reporteData.get(StaticVariables.RUC_MAPPIN_PALABRA_CALVE);
 
         LocalDate fechaCorteLocal = LocalDate.ofEpochDay(fechaCorte);
         LocalDate fechaGeneracionLocal = LocalDate.ofEpochDay(fechaGeneracion);
 
 
-        List<Map<String, Object>> creditos = (List<Map<String, Object>>) reporteData.get("creditos");
-        List<Map<String, Object>> movimientos = (List<Map<String, Object>>) reporteData.get("movimientos");
-        List<Map<String, Object>> demograficos = (List<Map<String, Object>>) reporteData.get("demograficos");
+        List<Map<String, Object>> creditos = (List<Map<String, Object>>) reporteData.get(StaticVariables.RUC_MAPPIN_CREDITOS);
+        List<Map<String, Object>> movimientos = (List<Map<String, Object>>) reporteData.get(StaticVariables.RUC_MAPPIN_MOVIMIENTOS);
+        List<Map<String, Object>> demograficos = (List<Map<String, Object>>) reporteData.get(StaticVariables.RUC_MAPPIN_DEMOGRAFICOS);
 
         List<credito> creditosList = creditos.stream().map(creditoData -> {
             return credito.newBuilder()
