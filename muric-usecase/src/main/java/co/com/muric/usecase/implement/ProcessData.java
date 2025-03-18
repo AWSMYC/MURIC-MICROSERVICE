@@ -287,7 +287,7 @@ public class ProcessData {
             avroDir.mkdirs();
         }
 
-        File avroFile = new File(avroDir, "ruc_data.avro");
+        File avroFile = new File(avroDir, StaticVariables.AVRO_FILE_NAME);
         DatumWriter<RUC> datumWriter = new SpecificDatumWriter<>(RUC.class);
         try (DataFileWriter<RUC> dataFileWriter = new DataFileWriter<>(datumWriter)) {
             dataFileWriter.create(ruc.getSchema(), avroFile);
