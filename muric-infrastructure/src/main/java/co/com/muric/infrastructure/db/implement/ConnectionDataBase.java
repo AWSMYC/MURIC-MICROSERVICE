@@ -26,49 +26,34 @@ public class ConnectionDataBase implements IConnectionDataBase {
     public List<ResultSet> executeQuery(DataSource dataSource) {
         List<ResultSet> resultSets = new ArrayList<>();
         List<Future<ResultSet>> futures = new ArrayList<>();
-
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-
         for (String tableName : dataSource.getTableNameList()) {
             Callable<ResultSet> task = () -> {
                 String sql = MessageFormat.format(StaticVariables.SELECT_TABLE, dataSource.getSchema(), tableName);
                 try (Connection connection = DriverManager.getConnection(dataSource.getHost(), dataSource.getUser(), dataSource.getPassword());
                      Statement statement = connection.createStatement();
                      ResultSet resultSet = statement.executeQuery(sql)) {
-                    while (resultSet.next()) {
-                        if(tableName.equalsIgnoreCase("informacion_creditos")) {
-                            String codigo_producto = resultSet.getString("codigo_producto");
-                            System.out.println("---------------" + codigo_producto + "----------------");
-                        } else if(tableName.equalsIgnoreCase("atributos_creditos")) {
-                            String valor_atributo = resultSet.getString("valor_atributo");
-                            System.out.println("---------------" + valor_atributo + "----------------");
-                        } else if(tableName.equalsIgnoreCase("movimientos_cartera")) {
-                            String estado = resultSet.getString("estado");
-                            System.out.println("---------------" + estado + "----------------");
-                        }
-                    }
-                    logger.info("Consulta ejecutada en tabla: " + tableName);
+                    logger.info(MessageFormat.format(StaticVariables.SELECT_TABLE_EXECUTE_SUCCESS, tableName));
                     return resultSet;
                 } catch (Exception e) {
-                    logger.error("Error al ejecutar consulta en tabla: " + tableName, e);
+                    logger.error(MessageFormat.format(StaticVariables.SELECT_TABLE_EXECUTE_ERROR, tableName, e));
                     return null;
                 }
             };
             futures.add(executorService.submit(task));
         }
-
         for (Future<ResultSet> future : futures) {
             try {
-                ResultSet resultSet = future.get(); // Espera que termine cada consulta
+                ResultSet resultSet = future.get();
                 if (resultSet != null) {
                     resultSets.add(resultSet);
                 }
             } catch (InterruptedException | ExecutionException e) {
-                logger.error("Error al obtener resultado de consulta", e);
+                logger.error(MessageFormat.format(StaticVariables.SELECT_TABLE_EXECUTE_GENERIC_ERROR, e));
             }
         }
-
         executorService.shutdown();
         return resultSets;
     }
+
 }

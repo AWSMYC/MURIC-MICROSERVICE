@@ -118,6 +118,9 @@ public class StaticVariables {
     public static final String ATRIBUTOS_CREDITOS_TABLE_NAME = "atributos_creditos";
     public static final String MOVIMIENTOS_CARTERA_TABLE_NAME = "movimientos_cartera";
     public static final String SELECT_TABLE = "SELECT * FROM {0}.{1}";
+    public static final String SELECT_TABLE_EXECUTE_SUCCESS = "Consulta ejecutada en tabla: {0}";
+    public static final String SELECT_TABLE_EXECUTE_ERROR = "Consulta ejecutada en tabla: {0} - error: {1}";
+    public static final String SELECT_TABLE_EXECUTE_GENERIC_ERROR = "Error al obtener resultado de consulta: {0}";
 
 }
 
