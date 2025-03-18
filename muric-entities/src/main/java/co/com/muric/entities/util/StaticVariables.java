@@ -107,5 +107,16 @@ public class StaticVariables {
     public static final String AVRO_DATA_PART = "ruc_data_part";
     public static final String AVRO_EXTENSION = ".avro";
     public static final String AVRO_SEGEMENT_CREATE_SUCCESS = "Segmento creado: ";
+
+    // DATABASE KEYS
+    public static final String HOST_DATABASE = "jdbc:postgresql://localhost:32768/postgres";
+    public static final String BATASABE = "postgres";
+    public static final String PASSWORD_DATABASE = "postgrespw";
+    public static final String SCHEMA_DATABASE = "MURIC_SCHEMA";
+    public static final String INFORMACION_CREDITO_ENTIDAD_TABLE_NAME = "informacion_creditos";
+    public static final String ATRIBUTOS_CREDITOS_TABLE_NAME = "atributos_creditos";
+    public static final String MOVIMIENTOS_CARTERA_TABLE_NAME = "movimientos_cartera";
+
+
 }
 
