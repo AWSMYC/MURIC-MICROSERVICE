@@ -99,7 +99,13 @@ public class StaticVariables {
     public static final String RESPONSE_BODY_EMPTY = "";
     public static final String AUTHENTICATION_ERROR = "Error al intentar generar la autenticación: {}";
     public static final String AVRO_SENT_ERROR = "Error al intentar enviar el segmento .avro {}";
-    public static final String AUTH_BODY= "{\"usuario\":\"%s\",\"contrasena\":\"%s=\"}";
+    public static final String AUTH_BODY = "{\"usuario\":\"%s\",\"contrasena\":\"%s=\"}";
 
+    // AVRO FILE DATA
+    public static final String AVRO_FILE_NAME = "ruc_data.avro";
+    public static final String AVRO_CREATE_SUCCESS = "Archivo Avro creado exitosamente en: ";
+    public static final String AVRO_DATA_PART = "ruc_data_part";
+    public static final String AVRO_EXTENSION = ".avro";
+    public static final String AVRO_SEGEMENT_CREATE_SUCCESS = "Segmento creado: ";
 }
 

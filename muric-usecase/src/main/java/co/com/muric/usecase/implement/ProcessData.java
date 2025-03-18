@@ -83,7 +83,7 @@ public class ProcessData {
                     StaticVariables.RUC_MAPPIN_DEMOGRAFICOS, demograficosFuture.get()
             );
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException("Error generando el reporte", e);
+            throw new RuntimeException(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
         }
     }
 
@@ -185,65 +185,65 @@ public class ProcessData {
 
         List<credito> creditosList = creditos.stream().map(creditoData -> {
             return credito.newBuilder()
-                    .setIdentificacionCreditoEntidad((String) creditoData.get("identificacion_credito_entidad"))
-                    .setTipoIdentificacion(Enum.valueOf(tipo_ident.class, (String) creditoData.get("tipo_identificacion")))
-                    .setNumeroIdentificacion((String) creditoData.get("numero_identificacion"))
-                    .setModalidad(Enum.valueOf(modalidad_c.class, (String) creditoData.get("modalidad")))
-                    .setCodigoProducto(Enum.valueOf(productos_id.class, (String) creditoData.get("codigo_producto")))
-                    .setCalidadDeudor(Enum.valueOf(calidad_d.class, (String) creditoData.get("calidad_deudor")))
-                    .setFechaDesembolso(LocalDate.ofEpochDay(Integer.parseInt(creditoData.get("fecha_desembolso").toString())))
-                    .setFechaVencimiento(LocalDate.ofEpochDay(Integer.parseInt(creditoData.get("fecha_vencimiento").toString())))
-                    .setValorDesembolsado((float) creditoData.get("valor_desembolsado"))
-                    .setFrecuenciaPagoCapital(Enum.valueOf(frecuencia_p_c.class, (String) creditoData.get("frecuencia_pago_capital")))
-                    .setFrecuenciaPagoIntereses(Enum.valueOf(frecuencia_p_i.class, (String) creditoData.get("frecuencia_pago_intereses")))
-                    .setTipoTasa(Enum.valueOf(tipo_t.class, (String) creditoData.get("tipo_tasa")))
-                    .setTipoGarantia(Enum.valueOf(tipo_g.class, (String) creditoData.get("tipo_garantia")))
-                    .setMoneda(Enum.valueOf(moneda.class, (String) creditoData.get("moneda")))
-                    .setEstadoRegistro(Enum.valueOf(estado_reg.class, (String) creditoData.get("estado_registro")))
+                    .setIdentificacionCreditoEntidad((String) creditoData.get(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD))
+                    .setTipoIdentificacion(Enum.valueOf(tipo_ident.class, (String) creditoData.get(StaticVariables.TIPO_IDENTIFICACION)))
+                    .setNumeroIdentificacion((String) creditoData.get(StaticVariables.NUMERO_IDENTIFICACION))
+                    .setModalidad(Enum.valueOf(modalidad_c.class, (String) creditoData.get(StaticVariables.MODALIDAD)))
+                    .setCodigoProducto(Enum.valueOf(productos_id.class, (String) creditoData.get(StaticVariables.CODIGO_PRODUCTO)))
+                    .setCalidadDeudor(Enum.valueOf(calidad_d.class, (String) creditoData.get(StaticVariables.CALIDAD_DEUDOR)))
+                    .setFechaDesembolso(LocalDate.ofEpochDay(Integer.parseInt(creditoData.get(StaticVariables.FECHA_DESEMBOLSO).toString())))
+                    .setFechaVencimiento(LocalDate.ofEpochDay(Integer.parseInt(creditoData.get(StaticVariables.FECHA_VENCIMIENTO).toString())))
+                    .setValorDesembolsado((float) creditoData.get(StaticVariables.VALOR_DESEMBOLSADO))
+                    .setFrecuenciaPagoCapital(Enum.valueOf(frecuencia_p_c.class, (String) creditoData.get(StaticVariables.FRECUENCIA_PAGO_CAPITAL)))
+                    .setFrecuenciaPagoIntereses(Enum.valueOf(frecuencia_p_i.class, (String) creditoData.get(StaticVariables.FRECUENCIA_PAGO_INTERESES)))
+                    .setTipoTasa(Enum.valueOf(tipo_t.class, (String) creditoData.get(StaticVariables.TIPO_TASA)))
+                    .setTipoGarantia(Enum.valueOf(tipo_g.class, (String) creditoData.get(StaticVariables.TIPO_GARANTIA)))
+                    .setMoneda(Enum.valueOf(moneda.class, (String) creditoData.get(StaticVariables.MONEDA)))
+                    .setEstadoRegistro(Enum.valueOf(estado_reg.class, (String) creditoData.get(StaticVariables.ESTADO_REGISTRO)))
                     .build();
         }).collect(Collectors.toList());
 
         List<movimiento> movimientosList = movimientos.stream().map(movimientoData -> {
             return movimiento.newBuilder()
-                    .setIdentificacionCreditoEntidad((String) movimientoData.get("identificacion_credito_entidad"))
-                    .setTipoIdentificacion(Enum.valueOf(tipo_ident.class, (String) movimientoData.get("tipo_identificacion")))
-                    .setNumeroIdentificacion((String) movimientoData.get("numero_identificacion"))
+                    .setIdentificacionCreditoEntidad((String) movimientoData.get(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD))
+                    .setTipoIdentificacion(Enum.valueOf(tipo_ident.class, (String) movimientoData.get(StaticVariables.TIPO_IDENTIFICACION)))
+                    .setNumeroIdentificacion((String) movimientoData.get(StaticVariables.NUMERO_IDENTIFICACION))
                     .setFechaCorte(fechaCorteLocal)
-                    .setCalificacionCredito(Enum.valueOf(calificacion_c.class, (String) movimientoData.get("calificacion_credito")))
-                    .setEstado(Enum.valueOf(estado.class, (String) movimientoData.get("estado")))
-                    .setPeriodoGracia(Enum.valueOf(periodo_g.class, (String) movimientoData.get("periodo_gracia")))
-                    .setDiasMora((int) movimientoData.get("dias_mora"))
-                    .setTasaInteres((float) movimientoData.get("tasa_interes"))
-                    .setSaldoCapital(5.0f)
-                    .setSaldoIntereses((float) movimientoData.get("saldo_intereses"))
-                    .setSaldoOtros((float) movimientoData.get("saldo_otros"))
-                    .setSpreadTasaInteres((float) movimientoData.get("spread_tasa_interes"))
-                    .setModeloProvisiones(Enum.valueOf(modelo.class, (String) movimientoData.get("modelo_provisiones")))
-                    .setProvisionProciclica((float) movimientoData.get("provision_prociclica"))
-                    .setProvisionContraciclica((float) movimientoData.get("provision_contraciclica"))
-                    .setProvisionAdicionalPoliticaEntidad((float) movimientoData.get("provision_adicional_politica_entidad"))
-                    .setProvisionOtros((float) movimientoData.get("provision_otros"))
-                    .setCuotaEsperadaCapital((float) movimientoData.get("cuota_esperada_capital"))
-                    .setCuotaEsperadaIntereses((float) movimientoData.get("cuota_esperada_intereses"))
-                    .setCuotaRecibidaCapital((float) movimientoData.get("cuota_recibida_capital"))
-                    .setCuotaRecibidaIntereses((float) movimientoData.get("cuota_recibida_intereses"))
-                    .setFechaCorte(LocalDate.ofEpochDay(Integer.parseInt(movimientoData.get("fecha_corte").toString())))
-                    .setFechaGarantia(LocalDate.ofEpochDay(Integer.parseInt(movimientoData.get("fecha_garantia").toString())))
-                    .setValorGarantia((float) movimientoData.get("valor_garantia"))
-                    .setProbabilidadIncumplimientoCredito((float) movimientoData.get("probabilidad_incumplimiento_credito"))
-                    .setPerdidaDadoIncumplimiento((float) movimientoData.get("perdida_dado_incumplimiento"))
-                    .setEstadoRegistro(Enum.valueOf(estado_reg.class, (String) movimientoData.get("estado_registro")))
-                    .setProvisionTotal((float) movimientoData.get("provision_total"))
+                    .setCalificacionCredito(Enum.valueOf(calificacion_c.class, (String) movimientoData.get(StaticVariables.CALIFICACION_CREDITO)))
+                    .setEstado(Enum.valueOf(estado.class, (String) movimientoData.get(StaticVariables.ESTADO)))
+                    .setPeriodoGracia(Enum.valueOf(periodo_g.class, (String) movimientoData.get(StaticVariables.PERIODO_GRACIA)))
+                    .setDiasMora((int) movimientoData.get(StaticVariables.DIAS_MORA))
+                    .setTasaInteres((float) movimientoData.get(StaticVariables.TASA_INTERES))
+                    .setSaldoCapital((float) movimientoData.get(StaticVariables.SALDO_CAPITAL))
+                    .setSaldoIntereses((float) movimientoData.get(StaticVariables.SALDO_INTERESES))
+                    .setSaldoOtros((float) movimientoData.get(StaticVariables.SALDO_OTROS))
+                    .setSpreadTasaInteres((float) movimientoData.get(StaticVariables.SPREAD_TASA_INTERES))
+                    .setModeloProvisiones(Enum.valueOf(modelo.class, (String) movimientoData.get(StaticVariables.MODELO_PROVISIONES)))
+                    .setProvisionProciclica((float) movimientoData.get(StaticVariables.PROVISION_PROCICLICA))
+                    .setProvisionContraciclica((float) movimientoData.get(StaticVariables.PROVISION_CONTRACICLICA))
+                    .setProvisionAdicionalPoliticaEntidad((float) movimientoData.get(StaticVariables.PROVISION_ADICIONAL_POLITICA_ENTIDAD))
+                    .setProvisionOtros((float) movimientoData.get(StaticVariables.PROVISION_OTROS))
+                    .setCuotaEsperadaCapital((float) movimientoData.get(StaticVariables.CUOTA_ESPERADA_CAPITAL))
+                    .setCuotaEsperadaIntereses((float) movimientoData.get(StaticVariables.CUOTA_ESPERADA_INTERESES))
+                    .setCuotaRecibidaCapital((float) movimientoData.get(StaticVariables.CUOTA_RECIBIDA_CAPITAL))
+                    .setCuotaRecibidaIntereses((float) movimientoData.get(StaticVariables.CUOTA_RECIBIDA_INTERESES))
+                    .setFechaCorte(LocalDate.ofEpochDay(Integer.parseInt(movimientoData.get(StaticVariables.FECHA_CORTE).toString())))
+                    .setFechaGarantia(LocalDate.ofEpochDay(Integer.parseInt(movimientoData.get(StaticVariables.FECHA_GARANTIA).toString())))
+                    .setValorGarantia((float) movimientoData.get(StaticVariables.VALOR_GARANTIA))
+                    .setProbabilidadIncumplimientoCredito((float) movimientoData.get(StaticVariables.PROBABILIDAD_INCUMPLIMIENTO_CREDITO))
+                    .setPerdidaDadoIncumplimiento((float) movimientoData.get(StaticVariables.PERDIDA_DADO_INCUMPLIMIENTO))
+                    .setEstadoRegistro(Enum.valueOf(estado_reg.class, (String) movimientoData.get(StaticVariables.ESTADO_REGISTRO)))
+                    .setProvisionTotal((float) movimientoData.get(StaticVariables.PROVISION_TOTAL))
                     .build();
         }).collect(Collectors.toList());
 
         List<Demografico> demograficosList = demograficos.stream().map(demograficoData -> {
             return Demografico.newBuilder()
-                    .setIdentificacionCreditoEntidad((String) demograficoData.get("identificacion_credito_entidad"))
-                    .setTipoIdentificacion(Enum.valueOf(tipo_ident.class, (String) demograficoData.get("tipo_identificacion")))
-                    .setNumeroIdentificacion((String) demograficoData.get("numero_identificacion"))
-                    .setClaveAtributo((int) demograficoData.get("clave_atributo"))
-                    .setValorAtributo((String) demograficoData.get("valor_atributo"))
+                    .setIdentificacionCreditoEntidad((String) demograficoData.get(StaticVariables.IDENTIFICACION_CREDITO_ENTIDAD))
+                    .setTipoIdentificacion(Enum.valueOf(tipo_ident.class, (String) demograficoData.get(StaticVariables.TIPO_IDENTIFICACION)))
+                    .setNumeroIdentificacion((String) demograficoData.get(StaticVariables.NUMERO_IDENTIFICACION))
+                    .setClaveAtributo((int) demograficoData.get(StaticVariables.CLAVE_ATRIBUTO))
+                    .setValorAtributo((String) demograficoData.get(StaticVariables.VALOR_ATRIBUTO))
                     .build();
         }).collect(Collectors.toList());
 
@@ -254,7 +254,7 @@ public class ProcessData {
             avroDir.mkdirs();
         }
 
-        File avroFile = new File(avroDir, "ruc_data.avro");
+        File avroFile = new File(avroDir, StaticVariables.AVRO_FILE_NAME);
         RUC ruc = RUC.newBuilder()
                 .setTipoEntidad(tipoEntidad)
                 .setCodigoEntidad(codigoEntidad)
@@ -271,7 +271,7 @@ public class ProcessData {
         try (DataFileWriter<RUC> dataFileWriter = new DataFileWriter<>(datumWriter)) {
             dataFileWriter.create(ruc.getSchema(), avroFile);
             dataFileWriter.append(ruc);
-            System.out.println("Archivo Avro creado exitosamente en: " + avroFile.getAbsolutePath());
+            System.out.println(StaticVariables.AVRO_CREATE_SUCCESS + avroFile.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -297,7 +297,7 @@ public class ProcessData {
                 segmentAvroFile(avroFile, avroDir);
             }
 
-            System.out.println("Archivo Avro creado exitosamente en: " + avroFile.getAbsolutePath());
+            System.out.println(StaticVariables.AVRO_CREATE_SUCCESS + avroFile.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -314,9 +314,9 @@ public class ProcessData {
             byte[] chunk = new byte[end - start];
             System.arraycopy(fileBytes, start, chunk, 0, chunk.length);
 
-            File splitFile = new File(avroDir, "ruc_data_part" + (i + 1) + ".avro");
+            File splitFile = new File(avroDir, StaticVariables.AVRO_DATA_PART + (i + 1) + StaticVariables.AVRO_EXTENSION);
             java.nio.file.Files.write(splitFile.toPath(), chunk);
-            System.out.println("Segmento creado: " + splitFile.getAbsolutePath());
+            System.out.println(StaticVariables.AVRO_SEGEMENT_CREATE_SUCCESS + splitFile.getAbsolutePath());
         }
 
         //avroFile.delete(); // Elimina el archivo original después de segmentarlo
