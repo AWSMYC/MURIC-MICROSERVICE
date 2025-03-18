@@ -50,6 +50,18 @@ public class StaticVariables {
     public static final String CLAVE_ATRIBUTO = "clave_atributo";
     public static final String VALOR_ATRIBUTO = "valor_atributo";
 
+    // MAPPIN RUC KEYS
+    public static final String RUC_MAPPIN_TIPO_ENTIDAD = "tipo_entidad";
+    public static final String RUC_MAPPIN_CODIGO_ENTIDAD = "codigo_entidad";
+    public static final String RUC_MAPPIN_FECHA_CORTE = "fecha_corte";
+    public static final String RUC_MAPPIN_FECHA_GENERACION = "fecha_generacion";
+    public static final String RUC_MAPPIN_COMENTARIOS = "comentarios";
+    public static final String RUC_MAPPIN_FIRMA = "firma";
+    public static final String RUC_MAPPIN_PALABRA_CALVE = "palabra_clave";
+    public static final String RUC_MAPPIN_CREDITOS = "creditos";
+    public static final String RUC_MAPPIN_MOVIMIENTOS = "movimientos";
+    public static final String RUC_MAPPIN_DEMOGRAFICOS = "demograficos";
+
     // SHEET WALLET MOVEMENTS FIELDS
     public static final String FECHA_CORTE = "fecha_corte";
     public static final String CALIFICACION_CREDITO = "calificacion_credito";

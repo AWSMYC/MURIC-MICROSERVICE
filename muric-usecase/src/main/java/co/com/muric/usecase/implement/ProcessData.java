@@ -57,16 +57,16 @@ public class ProcessData {
         CompletableFuture.allOf(creditosFuture, movimientosFuture, demograficosFuture).join();
         executor.shutdown();
         generarRUC(Map.of(
-                "tipo_entidad", 1,
-                "codigo_entidad", 100,
-                "fecha_corte", 20210101,
-                "fecha_generacion", 20210301,
-                "comentarios", "Registro de crédito",
-                "firma", "FirmaDigitalEjemplo",
-                "palabra_clave", "Confidencial",
-                "creditos", creditosFuture.get(),
-                "movimientos", movimientosFuture.get(),
-                "demograficos", demograficosFuture.get()
+                StaticVariables.RUC_MAPPIN_TIPO_ENTIDAD, 1,
+                StaticVariables.RUC_MAPPIN_CODIGO_ENTIDAD, 100,
+                StaticVariables.RUC_MAPPIN_FECHA_CORTE, 20210101,
+                StaticVariables.RUC_MAPPIN_FECHA_GENERACION, 20210301,
+                StaticVariables.RUC_MAPPIN_COMENTARIOS , "Registro de crédito",
+                StaticVariables.RUC_MAPPIN_FIRMA, "FirmaDigitalEjemplo",
+                StaticVariables.RUC_MAPPIN_PALABRA_CALVE, "Confidencial",
+                StaticVariables.RUC_MAPPIN_CREDITOS, creditosFuture.get(),
+                StaticVariables.RUC_MAPPIN_MOVIMIENTOS, movimientosFuture.get(),
+                StaticVariables.RUC_MAPPIN_DEMOGRAFICOS, demograficosFuture.get()
         ));
         try {
             return Map.of(
