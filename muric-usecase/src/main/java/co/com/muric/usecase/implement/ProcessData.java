@@ -32,10 +32,27 @@ public class ProcessData {
 
     private static final Logger logger = LogManager.getLogger(ProcessData.class);
 
-    public static Object generateAvroFormat(String source) throws IOException {
+    public static Object generateAvroFormatFromDataBase(String source) throws IOException {
         ExecutorService executor = Executors.newFixedThreadPool(3);
         try {
-                CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
+            CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
+            CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
+            CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
+            CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
+            Map<String, Object> a = generarReporte(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
+            ObjectMapper objectMapper = new ObjectMapper();
+            Object at = objectMapper.writeValueAsString(a);
+            return at;
+        } catch (Exception e) {
+            logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
+            throw new IOException(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
+        }
+    }
+
+    public static Object generateAvroFormatFromFile(String source) throws IOException {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        try {
+            CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
             CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
             CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
             CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
