@@ -109,14 +109,15 @@ public class StaticVariables {
     public static final String AVRO_SEGEMENT_CREATE_SUCCESS = "Segmento creado: ";
 
     // DATABASE KEYS
-    public static final String HOST_DATABASE = "jdbc:postgresql://localhost:32768/postgres";
-    public static final String BATASABE = "postgres";
+    public static final String HOST_DATABASE = "jdbc:postgresql://localhost:32768/muric_database";
+    public static final String BATASABE = "muric_database";
+    public static final String USER_DATABASE = "postgres";
     public static final String PASSWORD_DATABASE = "postgrespw";
-    public static final String SCHEMA_DATABASE = "MURIC_SCHEMA";
+    public static final String SCHEMA_DATABASE = "muric_schema";
     public static final String INFORMACION_CREDITO_ENTIDAD_TABLE_NAME = "informacion_creditos";
     public static final String ATRIBUTOS_CREDITOS_TABLE_NAME = "atributos_creditos";
     public static final String MOVIMIENTOS_CARTERA_TABLE_NAME = "movimientos_cartera";
-
+    public static final String SELECT_TABLE = "SELECT * FROM {0}.{1}";
 
 }
 

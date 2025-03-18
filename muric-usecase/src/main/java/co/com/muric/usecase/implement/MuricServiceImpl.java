@@ -1,6 +1,7 @@
 package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.dto.MuricResponseDTO;
+import co.com.muric.entities.model.database.DataSource;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
 import co.com.muric.usecase.interfaces.IMuricService;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 
 @Service
 public class MuricServiceImpl implements IMuricService {
@@ -35,7 +37,19 @@ public class MuricServiceImpl implements IMuricService {
                         return ResponseFormat.createErrorResponse(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, source));
                     }
                 case StaticVariables.TYPE_DATABASE:
-                    avroData = ProcessData.generateAvroFormatFromDataBase(source);
+                    ArrayList<String> tableNameList = new ArrayList<>();
+                    tableNameList.add(StaticVariables.INFORMACION_CREDITO_ENTIDAD_TABLE_NAME);
+                    tableNameList.add(StaticVariables.ATRIBUTOS_CREDITOS_TABLE_NAME);
+                    tableNameList.add(StaticVariables.MOVIMIENTOS_CARTERA_TABLE_NAME);
+                    avroData = ProcessData.generateAvroFormatFromDataBase(
+                            DataSource.builder()
+                                    .host(StaticVariables.HOST_DATABASE)
+                                    .user(StaticVariables.USER_DATABASE)
+                                    .password(StaticVariables.PASSWORD_DATABASE)
+                                    .database(StaticVariables.BATASABE)
+                                    .schema(StaticVariables.SCHEMA_DATABASE)
+                                    .tableNameList(tableNameList)
+                                    .build());
                     if (avroData != null) {
                         return ResponseFormat.createSuccessResponse(StaticVariables.PROCESS_DATABASE_OK);
                     } else {
