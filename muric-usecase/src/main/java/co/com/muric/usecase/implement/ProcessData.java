@@ -6,7 +6,7 @@ import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
 import co.com.muric.entities.model.excel.InformacionCredito;
 import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.util.StaticVariables;
-import co.com.muric.infrastructure.api.interfaces.ISuperintendenciaAPI;
+
 import co.com.muric.infrastructure.db.interfaces.IConnectionDataBase;
 import co.com.muric.usecase.util.FileDataSource;
 import org.apache.avro.file.DataFileWriter;
