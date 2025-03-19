@@ -6,5 +6,5 @@ import co.com.muric.entities.model.database.ResultSetModel;
 import java.util.List;
 
 public interface IConnectionDataBase {
-    List<ResultSetModel> executeQuery(DataSource dataSource);
+    ResultSetModel executeQuery(DataSource dataSource);
 }

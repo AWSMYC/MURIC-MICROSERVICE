@@ -109,7 +109,7 @@ public class StaticVariables {
     public static final String AVRO_SEGEMENT_CREATE_SUCCESS = "Segmento creado: ";
 
     // DATABASE KEYS
-    public static final String HOST_DATABASE = "jdbc:postgresql://localhost:32771/muric_database";
+    public static final String HOST_DATABASE = "jdbc:postgresql://localhost:32768/muric_database";
     public static final String BATASABE = "muric_database";
     public static final String USER_DATABASE = "postgres";
     public static final String PASSWORD_DATABASE = "postgrespw";
@@ -119,8 +119,7 @@ public class StaticVariables {
     public static final String MOVIMIENTOS_CARTERA_TABLE_NAME = "movimientos_cartera";
     public static final String SELECT_TABLE = "SELECT * FROM {0}.{1}";
     public static final String SELECT_TABLE_EXECUTE_SUCCESS = "Consulta ejecutada en tabla: {0}";
-    public static final String SELECT_TABLE_EXECUTE_ERROR = "Consulta ejecutada en tabla: {0} - error: {1}";
     public static final String SELECT_TABLE_EXECUTE_GENERIC_ERROR = "Error al obtener resultado de consulta: {0}";
-
+    public static final String RESULSET_ERROR = "Error al procesar el ResultSet de la tabla: {0} - Error: {1}";
 }
 

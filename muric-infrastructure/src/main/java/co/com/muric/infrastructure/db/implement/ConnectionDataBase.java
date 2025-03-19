@@ -2,6 +2,9 @@ package co.com.muric.infrastructure.db.implement;
 
 import co.com.muric.entities.model.database.DataSource;
 import co.com.muric.entities.model.database.ResultSetModel;
+import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
+import co.com.muric.entities.model.excel.InformacionCredito;
+import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.util.StaticVariables;
 import co.com.muric.infrastructure.db.interfaces.IConnectionDataBase;
 import org.apache.logging.log4j.LogManager;
@@ -24,52 +27,44 @@ public class ConnectionDataBase implements IConnectionDataBase {
     private static final int THREAD_POOL_SIZE = 10;
 
     @Override
-    public List<ResultSetModel> executeQuery(DataSource dataSource) {
-        List<ResultSetModel> resultSetModelList = new ArrayList<>();
-        List<Future<ResultSetModel>> futures = new ArrayList<>();
-
-        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-
+    public ResultSetModel executeQuery(DataSource dataSource) {
+        List<InformacionCredito> informacionCreditoList = new ArrayList<>();
+        List<AtributoCreditoDeuda > atributoCreditoDeudaList = new ArrayList<>();
+        List< MovimientoCartera > movimientoCarteraList = new ArrayList<>();
         for (String tableName : dataSource.getTableNameList()) {
-            Callable<ResultSetModel> task = () -> {
-                String sql = MessageFormat.format(StaticVariables.SELECT_TABLE, dataSource.getSchema(), tableName);
-                try (Connection connection = DriverManager.getConnection(dataSource.getHost(), dataSource.getUser(), dataSource.getPassword());
-                     Statement statement = connection.createStatement();
-                     ResultSet resultSet = statement.executeQuery(sql)) {
-                    while (resultSet.next()) {
-                        if(tableName.equalsIgnoreCase("informacion_creditos")) {
+            String sql = MessageFormat.format(StaticVariables.SELECT_TABLE, dataSource.getSchema(), tableName);
+            try (Connection connection = DriverManager.getConnection(dataSource.getHost(), dataSource.getUser(), dataSource.getPassword());
+                 Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(sql)) {
+                while (resultSet.next()) {
+                    switch (tableName) {
+                        case StaticVariables.INFORMACION_CREDITO_ENTIDAD_TABLE_NAME:
+                            informacionCreditoList.add(InformacionCredito.builder().build());
                             String codigo_producto = resultSet.getString("codigo_producto");
                             System.out.println("---------------" + codigo_producto + "----------------");
-                        } else if(tableName.equalsIgnoreCase("atributos_creditos")) {
+                            break;
+                        case StaticVariables.ATRIBUTOS_CREDITOS_TABLE_NAME:
+                            atributoCreditoDeudaList.add(AtributoCreditoDeuda.builder().build());
                             String valor_atributo = resultSet.getString("valor_atributo");
                             System.out.println("---------------" + valor_atributo + "----------------");
-                        } else if(tableName.equalsIgnoreCase("movimientos_cartera")) {
+                            break;
+                        case StaticVariables.MOVIMIENTOS_CARTERA_TABLE_NAME:
+                            movimientoCarteraList.add(MovimientoCartera.builder().build());
                             String estado = resultSet.getString("estado");
                             System.out.println("---------------" + estado + "----------------");
-                        }
+                            break;
                     }
-                    logger.info(MessageFormat.format(StaticVariables.SELECT_TABLE_EXECUTE_SUCCESS, tableName));
-                    return new ResultSetModel(tableName, resultSet); // Devuelve el modelo con la tabla y el resultado
-                } catch (Exception e) {
-                    logger.error(MessageFormat.format(StaticVariables.SELECT_TABLE_EXECUTE_ERROR, tableName, e.getMessage()));
-                    return null;
                 }
-            };
-            futures.add(executorService.submit(task));
-        }
-
-        for (Future<ResultSetModel> future : futures) {
-            try {
-                ResultSetModel resultSetModel = future.get();
-                if (resultSetModel != null) {
-                    resultSetModelList.add(resultSetModel);
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                logger.error(MessageFormat.format(StaticVariables.SELECT_TABLE_EXECUTE_GENERIC_ERROR, e.getMessage()));
+                logger.info(MessageFormat.format(StaticVariables.SELECT_TABLE_EXECUTE_SUCCESS, tableName));
+            } catch (Exception e) {
+                logger.error(MessageFormat.format(StaticVariables.RESULSET_ERROR, tableName, e.getMessage()));
+                return null;
             }
         }
-
-        executorService.shutdown();
-        return resultSetModelList;
+        return ResultSetModel.builder()
+                .informacionCreditoList(informacionCreditoList)
+                .atributoCreditoDeudaList(atributoCreditoDeudaList)
+                .movimientoCarteraList(movimientoCarteraList)
+                .build();
     }
 }
