@@ -24,17 +24,10 @@ public class MuricControllerTest {
 
     private static final String SOURCE_PATH = "/Users/kristianhdez/Desktop/Mapa funcional de variables.xlsx";
     private static final String TYPE_FILE = "FILE";
-    private static final String TEST_SOURCE = "testSource";
     private static final String GENERIC_VALID_TYPE =  "validType";
-    private static final String GENERIC_INVALID=  "invalid";
-    private static final String GENERIC_VALID_SOURCE = "validSource";
     private static final String GENERIC_SOURCE_PATH = "sourcePath";
-    private static final String INVALID_TYPE = "INVALID_TYPE";
     private static final String EMPTY_TYPE = "";
     private static final String EMPTY_SOURCE = "";
-    private static final String EMPTY_BLANK_SOURCE = "   ";
-    private static final String SOME_SOURCE = "someSource";
-    private static final String SPECIFIC_TYPE = "SPECIFIC_TYPE";
 
     @Mock
     private IMuricService muricService;

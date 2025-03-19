@@ -52,7 +52,7 @@ public class ProcessData {
             return generarReporte(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
         } catch (Exception e) {
             logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
-            throw new IOException(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
+            return new Object();
         }
     }
 
@@ -70,7 +70,7 @@ public class ProcessData {
         }
     }
 
-    private static Map<String, Object> generarReporte(List<InformacionCredito> informacionCreditoList, List<AtributoCreditoDeuda> atributoCreditoDeudaList, List<MovimientoCartera> movimientoCarteraList) throws ExecutionException, InterruptedException {
+    public static Map<String, Object> generarReporte(List<InformacionCredito> informacionCreditoList, List<AtributoCreditoDeuda> atributoCreditoDeudaList, List<MovimientoCartera> movimientoCarteraList) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(3);
         CompletableFuture<List<Map<String, Object>>> creditosFuture = CompletableFuture.supplyAsync(() -> informacionCreditoList.stream().map(ProcessData::mapearCredito).collect(Collectors.toList()), executor);
         CompletableFuture<List<Map<String, Object>>> movimientosFuture = CompletableFuture.supplyAsync(() -> movimientoCarteraList.stream().map(ProcessData::mapearMovimiento).collect(Collectors.toList()), executor);
