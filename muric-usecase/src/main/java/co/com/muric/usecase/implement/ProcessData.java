@@ -2,11 +2,11 @@ package co.com.muric.usecase.implement;
 
 import co.com.muric.entities.model.avro.*;
 import co.com.muric.entities.model.database.DataSource;
+import co.com.muric.entities.model.database.ResultSetModel;
 import co.com.muric.entities.model.excel.AtributoCreditoDeuda;
 import co.com.muric.entities.model.excel.InformacionCredito;
 import co.com.muric.entities.model.excel.MovimientoCartera;
 import co.com.muric.entities.util.StaticVariables;
-
 import co.com.muric.infrastructure.db.interfaces.IConnectionDataBase;
 import co.com.muric.usecase.util.FileDataSource;
 import org.apache.avro.file.DataFileWriter;
@@ -42,26 +42,23 @@ public class ProcessData {
 
     public static Object generateAvroFormatFromDataBase(DataSource dataSource) throws IOException {
         try {
+            ExecutorService executor = Executors.newFixedThreadPool(3);
+            ResultSetModel resultSetModel = iConnectionDataBase.executeQuery(dataSource);
 
-            iConnectionDataBase.executeQuery(dataSource);
-            /*CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
-            CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
-            CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
+            CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> resultSetModel.getInformacionCreditoList(), executor);
+            CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> resultSetModel.getMovimientoCarteraList(), executor);
+            CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> resultSetModel.getAtributoCreditoDeudaList(), executor);
             CompletableFuture.allOf(futureInformacionCredito, futureAtributoCreditoDeuda, futureMovimientoCartera).join();
-            Map<String, Object> a = generarReporte(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
-            ObjectMapper objectMapper = new ObjectMapper();
-            Object at = objectMapper.writeValueAsString(a);
-            return at;*/
+            return generarReporte(futureInformacionCredito.get(), futureAtributoCreditoDeuda.get(), futureMovimientoCartera.get());
         } catch (Exception e) {
             logger.error(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
             throw new IOException(MessageFormat.format(StaticVariables.PROCESS_FILE_ERROR, e));
         }
-        return null;
     }
 
     public static Object generateAvroFormatFromFile(String source) throws IOException {
-        ExecutorService executor = Executors.newFixedThreadPool(3);
         try {
+            ExecutorService executor = Executors.newFixedThreadPool(3);
             CompletableFuture<List<InformacionCredito>> futureInformacionCredito = fetchAsync(() -> FileDataSource.readSheetInformacionCredito(source), executor);
             CompletableFuture<List<AtributoCreditoDeuda>> futureAtributoCreditoDeuda = fetchAsync(() -> FileDataSource.readSheetAtributoCreditoDeuda(source), executor);
             CompletableFuture<List<MovimientoCartera>> futureMovimientoCartera = fetchAsync(() -> FileDataSource.readSheetMovimientoCartera(source), executor);
@@ -86,7 +83,7 @@ public class ProcessData {
                 StaticVariables.RUC_MAPPIN_CODIGO_ENTIDAD, 100,
                 StaticVariables.RUC_MAPPIN_FECHA_CORTE, 20210101,
                 StaticVariables.RUC_MAPPIN_FECHA_GENERACION, 20210301,
-                StaticVariables.RUC_MAPPIN_COMENTARIOS , "Registro de crédito",
+                StaticVariables.RUC_MAPPIN_COMENTARIOS, "Registro de crédito",
                 StaticVariables.RUC_MAPPIN_FIRMA, "FirmaDigitalEjemplo",
                 StaticVariables.RUC_MAPPIN_PALABRA_CALVE, "Confidencial",
                 StaticVariables.RUC_MAPPIN_CREDITOS, creditosFuture.get(),
@@ -99,7 +96,7 @@ public class ProcessData {
                     StaticVariables.RUC_MAPPIN_CODIGO_ENTIDAD, 100,
                     StaticVariables.RUC_MAPPIN_FECHA_CORTE, 20210101,
                     StaticVariables.RUC_MAPPIN_FECHA_GENERACION, 20210301,
-                    StaticVariables.RUC_MAPPIN_COMENTARIOS , "Registro de crédito",
+                    StaticVariables.RUC_MAPPIN_COMENTARIOS, "Registro de crédito",
                     StaticVariables.RUC_MAPPIN_FIRMA, "FirmaDigitalEjemplo",
                     StaticVariables.RUC_MAPPIN_PALABRA_CALVE, "Confidencial",
                     StaticVariables.RUC_MAPPIN_CREDITOS, creditosFuture.get(),
