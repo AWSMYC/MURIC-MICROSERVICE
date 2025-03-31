@@ -119,7 +119,6 @@ public class StaticVariables {
     public static final String MOVIMIENTOS_CARTERA_TABLE_NAME = "movimientos_cartera";
     public static final String SELECT_TABLE = "SELECT * FROM {0}.{1}";
     public static final String SELECT_TABLE_EXECUTE_SUCCESS = "Consulta ejecutada en tabla: {0}";
-    public static final String SELECT_TABLE_EXECUTE_GENERIC_ERROR = "Error al obtener resultado de consulta: {0}";
     public static final String RESULSET_ERROR = "Error al procesar el ResultSet de la tabla: {0} - Error: {1}";
 }
 
