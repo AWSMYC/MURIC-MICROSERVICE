@@ -110,7 +110,7 @@ public class StaticVariables {
 
     // DATABASE KEYS
     public static final String HOST_DATABASE = "jdbc:postgresql://localhost:32768/muric_database";
-    public static final String BATASABE = "muric_database";
+    public static final String BATASABE = "postgres";
     public static final String USER_DATABASE = "postgres";
     public static final String PASSWORD_DATABASE = "postgrespw";
     public static final String SCHEMA_DATABASE = "muric_schema";
