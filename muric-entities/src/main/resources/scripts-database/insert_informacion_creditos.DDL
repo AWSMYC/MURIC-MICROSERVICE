@@ -30,4 +30,4 @@ VALUES (0,
         0,
         '',
         '',
-        nextval('muric_schema.insumos_credito_id_seq'::regclass));
+        0;

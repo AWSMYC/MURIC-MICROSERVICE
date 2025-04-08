@@ -28,7 +28,7 @@ INSERT INTO muric_schema.movimientos_cartera
  fecha_corte,
  fecha_garantia)
 VALUES (0,
-        nextval('muric_schema.insumos_credito_id_seq'::regclass),
+        0,
         0,
         0,
         '',

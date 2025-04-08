@@ -4,7 +4,7 @@ INSERT INTO muric_schema.atributos_creditos
  numero_identificacion,
  clave_atributo,
  valor_atributo)
-VALUES (nextval('muric_schema.atributos_credito_id_seq'::regclass),
+VALUES (0,
         0,
         0,
         0,
