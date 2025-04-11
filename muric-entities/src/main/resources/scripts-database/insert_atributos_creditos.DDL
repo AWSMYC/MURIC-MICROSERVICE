@@ -4,9 +4,9 @@ INSERT INTO muric_schema.atributos_creditos
  numero_identificacion,
  clave_atributo,
  valor_atributo)
-VALUES (0,
-        0,
-        0,
-        0,
-        0,
-        '');
+VALUES (1,
+        4500123456789051,
+        9,
+        1935477911,
+        2,
+        'Carlos');
